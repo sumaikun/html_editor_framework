@@ -1,0 +1,365 @@
+/* 
+AlPhaD UI - Header Advance 
+
+* Version: 1.0
+* Build Date    :  27-2-2018 
+* Last Update   :  - []
+* Author: ALPhA D
+* Website: www.alphadsy.com
+* Github: www.github.com/alphadsy/
+* Lic : MIT 
+
+[Layout]
+
+[Color codes]
+
+[Typography]
+
+[content table]
+
+- header main css 
+  - header main css (lg)
+- #header1 css
+  - #header1 css (lg)
+.
+.
+.    
+- demo css (for demo purpose only)
+
+*/
+
+/* =======================================
+ header
+========================================*/
+.advanced_headerv .header {
+    position: relative;
+    width: 100vw;	
+    height: 600px;	
+}
+.advanced_headerv .header .center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 25%;
+    transform:translate(-50%,-50%);
+    z-index: 15; 
+    padding: 1rem;
+}
+.advanced_headerv .header .left {
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  width: 50%;
+  height: 100%;
+  z-index: 5; 
+}
+.advanced_headerv .header .right {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  z-index: 5; 
+}
+.advanced_headerv .header .scroll {
+  position: absolute;
+  top: 95%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+  color: #fff;
+  font-size: 1.5rem;
+}
+/*=== Large devices (desktops, 992px and up) ===*/
+@media (min-width: 992px) {
+.advanced_headerv .header .center {
+  width: 50%;
+}
+.advanced_headerv .header .left {
+}
+.advanced_headerv .header .right {
+}
+}
+ 
+
+/* =======================================
+ header#1
+========================================*/
+.advanced_headerv #header1 {
+  background: linear-gradient(to right, #614385, #516395);
+  overflow: hidden;
+  background-size: 400% 400%;
+  -webkit-animation: gradanim-2 8s ease infinite;
+  -moz-animation: gradanim-2 8s ease infinite;
+  animation: gradanim-2 8s ease infinite;
+}
+@-moz-keyframes gradanim-2 {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes gradanim-2 {
+    0%{background-position:11% 0%}
+    50%{background-position:90% 100%}
+    100%{background-position:11% 0%}
+}  
+.advanced_headerv #header1 img {
+  position: absolute;
+  left: 50%;
+} 
+.advanced_headerv #header1 .circle {
+  position: absolute;
+  left: 10%;
+  top: 10%;
+  width: 50vw;
+  height: 50%;
+}
+  /*=== Large devices (desktops, 992px and up) ===*/
+@media (min-width: 992px) {
+.advanced_headerv #header1 {
+}
+.advanced_headerv #header1 img {
+  z-index: 5;
+} 
+.advanced_headerv #header1 .circle {
+  position: absolute;
+  left: 20%;
+  top: 20%;
+  width: 40vw;
+  height: 40vw;
+  border-radius: 50%;
+  background: linear-gradient(to left, #ff512f, #dd2476);
+  background-size: 200% 200%;
+  -webkit-animation: gradanim-2 8s ease infinite;
+  -moz-animation: gradanim-2 8s ease infinite;
+  animation: gradanim-2 8s ease infinite;
+}
+@-moz-keyframes gradanim-2 {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes gradanim-2 {
+    0%{background-position:11% 0%}
+    50%{background-position:90% 100%}
+    100%{background-position:11% 0%}
+}  
+.advanced_headerv #header1 .caption {
+  color: #fff;
+  position: relative;
+  top: 15%;
+  left: -5%;
+  padding-right: 3rem;
+}
+}
+
+/* =======================================
+ header#2
+========================================*/
+.advanced_headerv #header2 {
+  background: linear-gradient(
+    to right,
+    #fff,
+    #fff 55%,
+    #F4F4F4 55%,
+    #F4F4F4 100%
+  );
+}
+.advanced_headerv #header2 img {
+  position: absolute;
+  left: 15%;
+}
+.advanced_headerv #header2 .caption {
+  color: #000;
+  position: absolute;
+  top: 25%;
+  left: 15%;
+  width: 70%;
+  z-index: 5;
+  text-align: center;
+}
+.advanced_headerv #header2 .caption .title {
+  opacity: .9;
+  font-size: 5rem;
+  font-weight: 600;
+}
+.advanced_headerv #header2 .caption p {
+  color: #aaa;
+  margin-top: 2rem;
+}
+/*=== Large devices (desktops, 992px and up) ===*/
+@media (min-width: 992px) {
+.advanced_headerv #header2 {
+  background: linear-gradient(
+    to right,
+    #fff,
+    #fff 20%,
+    #F4F4F4 20%,
+    #F4F4F4 55%,
+    #DAE6E6 55%,
+    #DAE6E6 80%,
+    #F4F4F4 80%,
+    #F4F4F4 100%
+  );
+}
+.advanced_headerv #header2 img {
+  left: 50%;
+  opacity: 1;
+}
+.advanced_headerv #header2 .caption {
+  top: 15%;
+  left: 10%;
+  width: 40%;
+  padding-right: 3rem;
+  z-index: 5;
+  text-align: left;
+}
+.advanced_headerv #header2 .caption p {
+  margin-top: 2rem;
+}  
+}
+  
+/* =======================================
+  header#3
+========================================*/
+.advanced_headerv #header3 {
+  background: #000;
+  background:
+    /* gradient overlay */ 
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.6), /* #000000 */
+      rgba(67, 67, 67, 0.5) /* #434343 */
+    ),
+    /* bottom image */
+    url('https://cdn.stocksnap.io/img-thumbs/960w/XSTO5645BM.jpg') no-repeat left top;
+  background-size: cover;  
+  z-index: 0; 
+}
+.advanced_headerv #header3 .center {
+  border-radius: 50%;
+  width: 350px;
+  height: 350px;
+  padding: 3%;
+  box-shadow: 0 16px 18px -6px rgb(15, 2, 2);
+  background-color: #1b1616;
+}
+.advanced_headerv #header3 .caption {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform:translate(-50%,-50%);
+  text-align: center;
+  color: #fff;
+}
+.advanced_headerv #header3 .caption .title {
+} 
+.advanced_headerv #header3 .caption .text {
+}
+
+/* =======================================
+ header#4
+========================================*/
+.advanced_headerv #header4 {
+}
+.advanced_headerv #header4 img {
+  position: absolute;
+  left: 15%;
+  opacity: 0.6;
+}
+.advanced_headerv #header4 .caption {
+  color: #000;
+  position: absolute;
+  top: 25%;
+  left: 15%;
+  width: 70%;
+  z-index: 5;
+  background-color: rgba(221, 221, 221, 0.103);
+  text-align: center;
+}
+.advanced_headerv #header4 .caption .title {
+  opacity: .9;
+  color: #eee;
+  font-size: 5rem;
+  font-weight: 600;
+  background: -webkit-linear-gradient(#c94b4b, #4b134f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 400% 400%;
+  -moz-animation: gradanim 8s ease infinite;
+  animation: gradanim 8s ease infinite;
+}
+@-moz-keyframes gradanim {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+@keyframes gradanim {
+    0%{background-position:11% 0%}
+    50%{background-position:90% 100%}
+    100%{background-position:11% 0%}
+}
+.advanced_headerv #header4 .caption p {
+  margin-top: 2rem;
+}
+/*=== Large devices (desktops, 992px and up) ===*/
+@media (min-width: 992px) {
+.advanced_headerv #header4 {
+}
+.advanced_headerv #header4 img {
+  left: 40%;
+  opacity: 1;
+}
+.advanced_headerv #header4 .caption {
+  top: 15%;
+  left: 15%;
+  width: 40%;
+  padding-right: 3rem;
+  z-index: 5;
+  text-align: left;
+}
+.advanced_headerv #header4 .caption p {
+  margin-top: 2rem;
+  margin-left: 1rem;
+}  
+}
+
+
+/*=== for demo only ===*/
+.advanced_headerv .demo-title {
+  text-align: center;
+  color: #808080;
+  padding-top: 5vh;
+  padding-bottom: 5vh;
+}
+.advanced_headerv .demo-more {
+  text-align: center;
+  color: #808080;
+  padding-top: 10vh;
+  padding-bottom: 10vh;
+}
+.advanced_headerv .demo-more i {
+  color: #696969;
+}
+.advanced_headerv .update-note {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  background-color: rgb(33, 33, 33);
+  color: #fff;
+  border-radius: 10px;
+  padding: 0 15px;  
+}
+.advanced_headerv a {
+  text-decoration: underline;
+  color: #696969;
+  font-weight: 600;
+}
+.advanced_headerv a:hover {
+  color: #696969;
+}
+.advanced_headerv {
+  overflow-x: hidden;
+}
+
+
+ 

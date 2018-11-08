@@ -1,0 +1,38 @@
+.calendar{
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+  }
+
+  .calendar #top,
+  .calendar #calendar.fc-unthemed {
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+  }
+
+  .calendar #top {
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+    padding: 0 10px;
+    line-height: 40px;
+    font-size: 12px;
+    color: #000;
+  }
+
+  .calendar #top .selector {
+    display: inline-block;
+    margin-right: 10px;
+  }
+
+  .calendar #top select {
+    font: inherit; /* mock what Boostrap does, don't compete  */
+  }
+
+  .calendar .left { float: left }
+  .calendar .right { float: right }
+  .calendar .clear { clear: both }
+
+  .calendar #calendar {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 10px;
+  }

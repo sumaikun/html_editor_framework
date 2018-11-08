@@ -1,0 +1,76 @@
+.layout11 .pt-3, .layout11 .py-3 {
+    padding-top: 1.5rem!important;
+}
+
+.layout11 .bg-primary {
+    color: #fff;
+    background-color: #337ab7;
+}
+
+.layout11 .bg-circle
+{
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  padding: 14px 4px;
+  color: #ececec;
+  text-align: center;
+  border-radius: 50%;
+}
+
+.layout11 .bg-circle-outline
+{
+  width: 50px;
+  height: 50px;
+  color:smoke;
+  padding: 8px 2px;
+  border: 2px solid;
+  border-color: smoke;
+  border-radius: 50%;
+}
+
+
+.layout11 .bg-circle a, .layout11 a:hover, .layout11 .media a:focus
+{
+  text-decoration: none !important;
+  outline: none;
+  color: #ececec;
+}
+.layout11 .bg-circle-outline a, .layout11 a:hover, .layout11 .media a:focus
+{
+  text-decoration: none !important;
+  outline: none;
+  color: #ececec;
+}
+
+.layout11 .d-inline-block {
+    display: inline-block!important;
+}
+
+.layout11 .mt-5,.layout11 .my-5 {
+    margin-top: 3rem!important;
+}
+
+.layout11 .pb-3, .layout11 .py-3 {
+    padding-bottom: 2rem!important;
+}
+
+.layout11 .pb-2, .layout11 .py-2 {
+    padding-bottom: .8rem!important;
+}
+
+.layout11 a.bg-danger:focus,.layout11 a.bg-danger:hover,.layout11 button.bg-danger:focus,.layout11 button.bg-danger:hover {
+    background-color: #bd2130!important;
+}
+
+.layout11 .bg-danger {
+    background-color: #dc3545!important;
+}
+
+.layout11 .bg-info {
+    background-color: #17a2b8!important;
+}
+
+.layout11 a.bg-info:focus,.layout11 a.bg-info:hover,.layout11 button.bg-info:focus,.layout11 button.bg-info:hover {
+    background-color: #117a8b!important;
+}

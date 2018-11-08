@@ -1,0 +1,24 @@
+.layout9 .how-section1{
+    margin-top:-15%;
+    padding: 10%;
+}
+.layout9 .how-section1 h4{
+    color: #ffa500;
+    font-weight: bold;
+    font-size: 30px;
+}
+.layout9 .how-section1 .subheading{
+    color: #3931af;
+    font-size: 20px;
+}
+.layout9 .how-section1 .row
+{
+    margin-top: 10%;
+}
+.layout9 .how-img 
+{
+    text-align: center;
+}
+.layout9 .how-img img{
+    width: 40%;
+}

@@ -1,0 +1,20 @@
+.layout13{ background: url('https://templated.co/items/demos/visualize/images/bg.jpg'); background-repeat: no-repeat; background-size: cover; background-attachment: fixed; text-align: center; color: #C7C7D0;  
+font-family: Source Sans Pro, sans-serif;font-weight:200; padding-bottom:50px; }
+.layout13 .image { background-color:rgba(255, 255, 255, 0.075);  border-radius: 50%; margin: 20px auto; padding:10px; border: 1px solid #C7C7D0; margin-top:50px;}
+
+.layout13 h1 {  font-family: Source Sans Pro, sans-serif; color: #C7C7D0; font-weight:200; margin:10px auto; width:70%; line-height:1.5;}
+
+.layout13 .socialmedia a { background-color:rgba(255, 255, 255, 0.075); text-decoration: none; font-size:16pt; transition:.5s all;
+color:#C7C7D0; border:1px solid #C7C7D0; width:50px; height:50px; display: inline-block; padding:10px; border-radius:50%; }
+
+.layout13 .socialmedia a:hover,strong { color: #FFFFFF; border-color:#FFF; font-weight: 200; }
+
+.layout13 div.tripple { width:364px; display: inline-block; text-align: center; vertical-align: top; }
+
+.layout13 .boximg { color:#FFF; background-color:rgba(255, 255, 255, 0.075); width:346px; height:auto; margin:20px auto; border:1px solid #C7C7D0; border-radius:5px; overflow: hidden;  transition: 0.5s all;}
+.layout13 .boximg img { width:346px; height:auto;  }
+.layout13 .boximg p { min-height:50px; display:block; padding-top:20px; text-align:center;  }
+
+.layout13 .boximg:hover { box-shadow:0 0 20px #333333; border:1px solid #FFF;}
+.layout13 .footer { color: #FFFFFF; font-size:11pt; }
+.layout13 hr { width:10%;background-color:rgba(255, 255, 255, 0.075); margin-top:70px; margin-bottom:70px; }

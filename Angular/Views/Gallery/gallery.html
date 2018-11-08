@@ -1,0 +1,85 @@
+<style>
+    .hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
+    }
+
+    .thumbnail {
+        padding: 0;
+    }
+
+    .carousel-inner>.item>img, .carousel-inner>.item>a>img {
+        width: 100%;
+    }
+
+</style>
+
+<div class="container">
+    <input  style=" font-size: 40px;" name="folder_to_add" type="text">
+    <button ng-click="load_from_folder()">Buscar en carpeta</button> 
+    <div id="main_area">
+        <!-- Slider -->
+        <div class="row">
+            <div class="col-sm-6" id="slider-thumbs">
+                <!-- Bottom switcher of slider -->
+                <ul class="hide-bullets">                   
+
+                    <li  ng-repeat="image in images" class="col-sm-3">
+                        <a class="thumbnail" ng-click="move_jquery_carousel($index)"  id="{{$index}}"><img class="img img-responsive" ng-src="{{image}}"></a>
+                    </li>
+
+                   
+                </ul>
+            </div>
+            <div class="col-sm-6">
+                <div class="col-xs-12" id="slider">
+                    <!-- Top part of the slider -->
+                    <div class="row">
+                        <div class="col-sm-12" id="carousel-bounding-box">
+                            <div class="carousel slide" id="myCarousel" data-interval="false">
+                                <!-- Carousel items -->
+                                <div class="carousel-inner">
+                                    <div ng-repeat="image in images"  ng-class="$first ? 'active item':'item'  " data-slide-number="{{$index}}">
+                                        <img  class="img img-responsive" ng-src="{{image}}">
+                                    </div>                                                                        
+                                </div>
+
+                                <div ng-if="ready_change_image" class="form-group">
+                                    <button ng-click="change_picture()" class="btn btn-success form-control">Cambiar</button>
+                                </div>
+
+                                <!-- Carousel nav -->
+                                <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                                    <span class="glyphicon glyphicon-chevron-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                                    <span class="glyphicon glyphicon-chevron-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--/Slider-->
+        </div>
+
+    </div>
+</div>
+
+<script>
+        var init_carousel = function() {
+                
+                //console.log("Exec");
+
+                $('#myCarousel').carousel({interval:false});
+         
+           
+                // When the carousel slides, auto update the text
+                $('#myCarousel').on('slid.bs.carousel', function (e) {
+                         var id = $('.item.active').data('slide-number');
+                        $('#carousel-text').html($('#slide-content-'+id).html());
+        });
+    };
+
+</script>

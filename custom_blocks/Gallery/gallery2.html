@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Jquery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+        <!--- Bootstrap --> 
+        
+         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!--- Custom Styles -->
+
+        <link rel="stylesheet" href="../css/gallery2.css">
+        <link rel="stylesheet" href="../css/gallery4.css">
+      
+        <!-- Font Awesome -->
+
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    </head>
+    <body>
+        boostrap 3.3.7
+        <div class="content-block gallery2">
+            <style>
+                .gallery2 .hide-bullets {
+                    list-style:none;
+                    margin-left: -40px;
+                    margin-top:20px;
+                }
+
+                .gallery2 .thumbnail {
+                    padding: 0;
+                }
+
+                .gallery2 .carousel-inner>.item>img, .carousel-inner>.item>a>img {
+                    width: 100%;
+                }
+            </style>
+            <div class="container">
+                <div id="main_area">
+                    <!-- Slider -->
+                    <div class="row">
+                        <div class="col-sm-6" id="slider-thumbs">
+                            <!-- Bottom switcher of slider -->
+                            <ul class="hide-bullets">
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-0">
+                                        <img src="http://placehold.it/150x150&text=zero">
+                                    </a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-1"><img src="http://placehold.it/150x150&text=1"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-2"><img src="http://placehold.it/150x150&text=2"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-3"><img src="http://placehold.it/150x150&text=3"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-4"><img src="http://placehold.it/150x150&text=4"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-5"><img src="http://placehold.it/150x150&text=5"></a>
+                                </li>
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-6"><img src="http://placehold.it/150x150&text=6"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-7"><img src="http://placehold.it/150x150&text=7"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-8"><img src="http://placehold.it/150x150&text=8"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-9"><img src="http://placehold.it/150x150&text=9"></a>
+                                </li>
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-10"><img src="http://placehold.it/150x150&text=10"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-11"><img src="http://placehold.it/150x150&text=11"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-12"><img src="http://placehold.it/150x150&text=12"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-13"><img src="http://placehold.it/150x150&text=13"></a>
+                                </li>
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-14"><img src="http://placehold.it/150x150&text=14"></a>
+                                </li>
+
+                                <li class="col-sm-3">
+                                    <a class="thumbnail" id="carousel-selector-15"><img src="http://placehold.it/150x150&text=15"></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="col-xs-12" id="slider">
+                                <!-- Top part of the slider -->
+                                <div class="row">
+                                    <div class="col-sm-12" id="carousel-bounding-box">
+                                        <div class="carousel slide" id="myCarousel_gallery2">
+                                            <!-- Carousel items -->
+                                            <div class="carousel-inner">
+                                                <div class="active item" data-slide-number="0">
+                                                    <img src="http://placehold.it/470x480&text=zero"></div>
+
+                                                <div class="item" data-slide-number="1">
+                                                    <img src="http://placehold.it/470x480&text=1"></div>
+
+                                                <div class="item" data-slide-number="2">
+                                                    <img src="http://placehold.it/470x480&text=2"></div>
+
+                                                <div class="item" data-slide-number="3">
+                                                    <img src="http://placehold.it/470x480&text=3"></div>
+
+                                                <div class="item" data-slide-number="4">
+                                                    <img src="http://placehold.it/470x480&text=4"></div>
+
+                                                <div class="item" data-slide-number="5">
+                                                    <img src="http://placehold.it/470x480&text=5"></div>
+                                                
+                                                <div class="item" data-slide-number="6">
+                                                    <img src="http://placehold.it/470x480&text=6"></div>
+                                                
+                                                <div class="item" data-slide-number="7">
+                                                    <img src="http://placehold.it/470x480&text=7"></div>
+                                                
+                                                <div class="item" data-slide-number="8">
+                                                    <img src="http://placehold.it/470x480&text=8"></div>
+                                                
+                                                <div class="item" data-slide-number="9">
+                                                    <img src="http://placehold.it/470x480&text=9"></div>
+                                                
+                                                <div class="item" data-slide-number="10">
+                                                    <img src="http://placehold.it/470x480&text=10"></div>
+                                                
+                                                <div class="item" data-slide-number="11">
+                                                    <img src="http://placehold.it/470x480&text=11"></div>
+                                                
+                                                <div class="item" data-slide-number="12">
+                                                    <img src="http://placehold.it/470x480&text=12"></div>
+
+                                                <div class="item" data-slide-number="13">
+                                                    <img src="http://placehold.it/470x480&text=13"></div>
+
+                                                <div class="item" data-slide-number="14">
+                                                    <img src="http://placehold.it/470x480&text=14"></div>
+
+                                                <div class="item" data-slide-number="15">
+                                                    <img src="http://placehold.it/470x480&text=15"></div>
+                                            </div>
+                                            <!-- Carousel nav -->
+                                            <a class="left carousel-control" href="#myCarousel_gallery2" role="button" data-slide="prev">
+                                                <span class="glyphicon glyphicon-chevron-left"></span>
+                                            </a>
+                                            <a class="right carousel-control" href="#myCarousel_gallery2" role="button" data-slide="next">
+                                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--/Slider-->
+                    </div>
+
+                </div>
+            </div>
+            <script src="../js/program_gallery2.js"></script>
+        </div>
+
+        <div class="content-block gallery4">
+            <div class="container">
+              <div class="text_center">
+                    <img src="https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg" width="280" height="280" class="img_polygon">
+                    <img src="https://www.planwallpaper.com/static/images/6-940622110b39cad584098e6749eac708.jpg" width="280" height="280" class="img_polygon">
+                    <img src="https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg" width="280" height="280" class="img_polygon">
+                    <img src="https://www.planwallpaper.com/static/images/6-940622110b39cad584098e6749eac708.jpg" width="280" height="280" class="img_polygon">
+                    <img src="https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg" width="280" height="280" class="img_polygon">
+                    <img src="https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg" width="280" height="280" class="img_polygon">
+                    <img src="https://www.planwallpaper.com/static/images/2ba7dbaa96e79e4c81dd7808706d2bb7_large.jpeg" width="280" height="280" class="img_polygon">
+                </div>
+            </div>
+
+        </div>
+
+       
+
+    </body>
+</html>        

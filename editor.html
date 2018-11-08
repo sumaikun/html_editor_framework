@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Editor</title>	
+		
+		<!-- Jquery -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+		<!-- Font Awesome -->
+
+		 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+		
+		<!--<script defer src="https://use.fontawesome.com/releases/v5.0.10/js/all.js" integrity="sha384-slN8GvtUJGnv6ca26v8EzVaR9DC58QEwsIk9q1QXdCU8Yu8ck/tL/5szYlBbqmS+" crossorigin="anonymous"></script>-->
+		
+
+		<!--- Bootstrap -->	
+        
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+        <!--- Google Fonts -->
+        <link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Roboto+Slab:400,700|Inconsolata:400,700&subset=latin,cyrillic'
+          rel='stylesheet' type='text/css'>
+
+        <!-- Jquery Context Menu -->  
+	    <link rel="stylesheet" href="https://swisnl.github.io/jQuery-contextMenu/css/screen.css" type="text/css"/>
+	    <link rel="stylesheet" href="https://swisnl.github.io/jQuery-contextMenu/css/theme.css" type="text/css"/>
+	    <link rel="stylesheet" href="https://swisnl.github.io/jQuery-contextMenu/css/theme-fixes.css" type="text/css"/>
+	    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+	    <link href="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.css" rel="stylesheet" type="text/css" />
+	   
+	    <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.contextMenu.js" type="text/javascript"></script>
+	    <script src="https://swisnl.github.io/jQuery-contextMenu/dist/jquery.ui.position.min.js" type="text/javascript"></script>
+	    <script src="https://swisnl.github.io/jQuery-contextMenu/js/main.js" type="text/javascript"></script>
+
+
+	  	<!-- Sweet Alert -->
+	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.28.1/sweetalert2.css">
+	    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.28.1/sweetalert2.all.js"></script>
+	    
+
+	    <!--  Angular -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js" ></script>				
+		
+		<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
+
+
+	    <!-- Custom Scripts -->	    
+	    <script src="Angular/Services/RestServices.js?n=1"></script>
+
+	    <script src="Angular/Programs/editor_program.js?n=1"></script>
+
+
+	    <!-- Custom Styles -->
+		<link rel="stylesheet" href="Core/css/iframe_sizes.css">
+
+
+
+
+
+	</head>
+
+
+
+	<body ng-app="editor_module" class="container-fluid">
+
+		<div class="row">	
+		<!-- Barra superior para modificar páginas --> 	
+			<div class="col-lg-12">
+				<span class="context-menu-one btn btn-primary">Imagenes</span>
+				<span class="context-menu-two btn btn-primary">Texto</span>
+				<span class="context-menu-three btn btn-primary">Bloque</span>
+				<span class="context-menu-four btn btn-primary">Estilos</span>
+				<span class="context-menu-five btn btn-primary">Programas</span>
+				<!--<button onclick="openpopup('components.html')">Test components</button>-->			
+				<select onchange="deploy_html()"  id="content_editor" style='width:"150px;"'>
+					<option>Selecciona</option>
+					<option value='froala_blocks' >Froala Blocks</option>
+					<option value='custom_blocks' >Custom blocks</option>
+
+				</select>				
+				<!--<button onclick="get_html()">Get</button>-->
+				<input type="text" id="url_name" style='width:"150px;"'>
+				<button style="margin-left:1px;" onclick="search_html()">Buscar</button>
+				<button style="margin-left:1px;" onclick="reload_html()">Recargar</button>
+				<button style="margin-left:1px;" onclick="create_html()">Crear</button>
+				<select id="bootstrap_version">
+					<option>Bootstrap Version</option>
+					<option value="b_3.7">Bootstrap 3.7</option>
+					<option value="b_4.0">Bootstrap 4.0</option>
+				</select>
+				<button onclick="save_to_server()">Guardar</button>
+				<button onclick="test_css_service()">Test css service</button>
+
+				<button title="Tv" class="btn btn-warning" onclick="switch_screen('tv_size')"><i class="fas fa-tv"></i></button>
+				<button title="Escritorio" class="btn btn-warning" onclick="switch_screen('desktop_size')"><i class="fas fa-desktop"></i></button>
+				<button title="Tablet" class="btn btn-warning" onclick="switch_screen('tablet_size')"><i class="fas fa-tablet-alt"></i></button>
+				<button title="med-Celular" class="btn btn-warning" onclick="switch_screen('phone_size')"><i class="fas fa-mobile-alt"></i></button>
+				<button title="celular" class="btn btn-warning" onclick="switch_screen('small_phone_size')"><i class="fas fa-mobile"></i></button>
+				<button onclick="apply_to_screen()">aplicar a pantalla</button>
+				<button onclick="apply_all_screens()">aplicar todos</button>
+				<input type="text" id="free_transform" style='width:"150px;"'>
+				<button class="btn btn-danger" style="margin-left:1px;" onclick="transform_by_reference()" title="transformar por referencia"><i class="fas fa-star"></i></button>				
+			</div>
+
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="table-responsive">		
+					<iframe id="editor_frame" class="desktop_size"   src=""></iframe>
+				</div>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="table-responsive">		
+					<iframe id="asistant_frame" class="desktop_size"   src=""></iframe>
+				</div>
+			</div>
+		</div>		
+
+		<!-- Barra superior --> 
+
+		<!-- Modal asistente -->
+			<!--Modal: Name-->
+			<div class="modal fade" id="modalYT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="ImageController">
+				<div class="modal-dialog modal-lg" role="document" >
+
+				    <!--Content-->
+				    <div class="modal-content">
+
+				        <!--Body-->
+				        <div class="modal-body mb-0 p-0" >
+
+				            <div class = "z-depth-1-half" style="{{style}}" ng-include="view">		                
+				            </div>
+
+				        </div>
+
+				        <!--Footer-->
+				        <div class="modal-footer justify-content-center">
+				            <b><span class="mr-4">! Opciones de menu ! <i class="fas fa-arrow-right"></i></span></b>
+				            <a type="button"  ng-repeat="option in options" ng-click="exec_option(option.key)" class="btn-floating btn-sm" title="{{option.title}}"><i class="{{option.icon}}"></i></a>
+				        </div>
+
+				    </div>
+				    <!--/.Content-->
+
+				</div>
+			</div>
+			<!--Modal: Name-->
+		<!-- Modal asistente -->
+		<div ng-controller="StylesController" id="StyleCtrl"></div>
+	</body>
+
+	
+
+
+	<script type="text/javascript" src="Core/js/regular_objects.js"></script>
+
+	<script src="Core/js/iframe_bar.js"></script>
+
+	<script src="Core/js/html_control.js"></script>
+
+</html>
+
+
+
+
