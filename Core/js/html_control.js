@@ -151,7 +151,7 @@ function test_css_service()
 
 				//Mover evento reemplazado al final.
 
-				
+
 
 				//console.log(this.editor_events);
 				//console.log(event1);
@@ -1107,6 +1107,10 @@ function test_css_service()
 
 	function interactjs_editor_frame_process(html_event)
 	{
+		if(editor_frame.find("#media_query").length == 0)
+		{
+			editor_html.find("head link").last().after('<link rel="stylesheet" id="media_query" href="css/media_query.css">');
+		}
 		 		    	   
 		if(editor_html.find(".interactjs").length == 0)
 		{

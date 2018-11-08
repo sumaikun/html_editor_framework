@@ -251,8 +251,7 @@
 		};
 
 
-		function apply_all_screens(){ 
-
+		function apply_all_screens(){
 			swal({			
 			  title: decode_utf8('¿Esta seguro de guardar?'),
 			  text: decode_utf8('Esto aplicara la transformación en todos los tamaños de pantalla'),
