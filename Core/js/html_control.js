@@ -11,7 +11,7 @@ var styles_included = [];
 var proyect_folder;
 
 function test_css_service()
-
+{ 
 	swal({			
 	  title: decode_utf8('¿Esta seguro de guardar?'),
 	  text: '',
