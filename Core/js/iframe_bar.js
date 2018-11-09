@@ -98,6 +98,18 @@
 		}
 
 		function switch_screen(size){
+
+			if(size == "tv_size")
+			{
+				$(".to_table_responsive").addClass("table-responsive");
+			}
+			else
+			{
+				$(".to_table_responsive").removeClass("table-responsive");
+			}
+
+			//Es mejor solucion evaluar si las dimensiones sobrepasan la pantalla para agregar eso.
+
 			let element = document.getElementById("editor_frame");
 			let element2 = document.getElementById("asistant_frame");
     		element.className = size;

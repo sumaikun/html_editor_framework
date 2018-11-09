@@ -11,7 +11,6 @@ var styles_included = [];
 var proyect_folder;
 
 function test_css_service()
-{
 
 	swal({			
 	  title: decode_utf8('¿Esta seguro de guardar?'),
@@ -1107,7 +1106,7 @@ function test_css_service()
 
 	function interactjs_editor_frame_process(html_event)
 	{
-		if(editor_frame.find("#media_query").length == 0)
+		if(editor_html.find("#media_query").length == 0)
 		{
 			editor_html.find("head link").last().after('<link rel="stylesheet" id="media_query" href="css/media_query.css">');
 		}
