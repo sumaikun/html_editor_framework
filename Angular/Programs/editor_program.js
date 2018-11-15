@@ -191,6 +191,12 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
          return  RestfulService.launch({Acc:"update_stylesheet",style_to_update:css});
       }
 
+      $scope.add_media_query_properties = function(proyect_folder)
+      {
+        console.log("launch media query instruction "+proyect_folder);
+          return  RestfulService.launch({Acc:"add_media_query_properties",proyect_folder:proyect_folder}); 
+      }
+
 }]);
 
 

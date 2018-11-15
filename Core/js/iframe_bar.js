@@ -72,10 +72,25 @@
 		function reload_html()
 		{
 			let iframe = document.getElementById("editor_frame");
-			console.log(iframe.src);
-			console.log(window.location);
+			//console.log(iframe);
+			//console.log(iframe.src);
+			//console.log(window.location);
+
+			if(iframe.src.includes("?"))
+			{
+				iframe.src = iframe.src.substring(0, iframe.src.indexOf('?'));
+			}
+
+
 			if(iframe.src != window.location.href){
-				iframe.src = iframe.src
+				
+				let generated_url = iframe.src.replace(window.location.origin,"");
+
+				console.log(generated_url);
+
+				let random_number = Math.ceil((Math.random() * 100000) + 1);
+				
+				iframe.src = generated_url+"?random="+random_number;
 			}			
 		}
 
@@ -200,7 +215,13 @@
 
 		function save_process(mode)
 		{
-			
+
+			console.log(editor_html.find(".wow"));
+
+			editor_html.find(".wow").removeAttr("style");
+
+			editor_html.find(".wow").removeClass("animated");			
+
 
 			if(mode == "normal")
 			{
@@ -224,7 +245,10 @@
 
 			    editor_html.find(".program.calendar").html('<div id="calendar"></div>'); 
 
-			    
+				if(editor_html.find(".carousel-inner").length > 0)
+				{
+					editor_html.find(".carousel-inner *").removeAttr("style");	
+				}					    
 					
 			}
 			if(mode=="interact")
@@ -241,6 +265,11 @@
 
 			return getScope("#modalYT").save_document(url,html).then(function(response){
 				console.log("Guardado");
+				if(mode=="normal")
+				{ 
+					reload_html();
+					search_html();
+				}	
 			});
 		}
 
@@ -438,6 +467,10 @@
 						   
 						}
 				    }
+
+			save_process("normal").then(function(response){
+				console.log("Recargar forzando a reiniciarse el cache");
+			});	    
 		}
 
 		function change_media_query_sheet()

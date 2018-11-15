@@ -56,7 +56,9 @@
 		<link rel="stylesheet" href="Core/css/iframe_sizes.css">
 
 
+		<script src="Core/js/interact.js"></script>
 
+		<script src="Core/js/basic_drag_and_drop.js"></script>
 
 
 	</head>
@@ -73,6 +75,9 @@
 				<span class="context-menu-three btn btn-primary">Bloque</span>
 				<span class="context-menu-four btn btn-primary">Estilos</span>
 				<span class="context-menu-five btn btn-primary">Programas</span>
+				<span class="context-menu-six btn btn-primary">Listas</span>
+				<span class="context-menu-seven btn btn-primary">Botones</span>
+				<span class="badge badge-danger">Prevent?</span>&nbsp<input type="checkbox"  name="hide_menus">				
 				<!--<button onclick="openpopup('components.html')">Test components</button>-->			
 				<select onchange="deploy_html()"  id="content_editor" style='width:"150px;"'>
 					<option>Selecciona</option>
@@ -91,7 +96,7 @@
 					<option value="b_4.0">Bootstrap 4.0</option>
 				</select>
 				<button onclick="save_to_server()">Guardar</button>
-				<button onclick="test_css_service()">Test css service</button>
+				<button onclick="test_css_service()">Guardar cambios css</button>
 
 				<button title="Tv" class="btn btn-warning" onclick="switch_screen('tv_size')"><i class="fas fa-tv"></i></button>
 				<button title="Escritorio" class="btn btn-warning" onclick="switch_screen('desktop_size')"><i class="fas fa-desktop"></i></button>
@@ -154,6 +159,44 @@
 			<!--Modal: Name-->
 		<!-- Modal asistente -->
 		<div ng-controller="StylesController" id="StyleCtrl"></div>
+
+
+		<!-- Modal asistente 2 -->
+
+
+		<div class="modal fade" id="modalProperties" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="ImageController">
+			<div class="modal-dialog modal-lg" role="document" >
+
+			    <!--Content-->
+			    <div class="modal-content resize-drag">
+			    	<div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Propiedades de elemento html</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+
+			        <!--Body-->
+			        <div class="modal-body" id="property_body">
+
+			            
+
+			        </div>
+
+			        <!--Footer-->
+			        <div class="modal-footer justify-content-center">
+			            
+			        </div>
+
+			    </div>
+			    <!--/.Content-->
+
+			</div>
+		</div>
+
+
+
+
 	</body>
 
 	

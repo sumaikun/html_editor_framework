@@ -215,7 +215,21 @@ class ComponentController
 	}
 
 
+	public function add_media_query_properties($request)
+	{
+		$dir =  $this->request->proyect_folder;
+		
+		if(file_exists($_SERVER["DOCUMENT_ROOT"].'/'.$dir.'/css/media_query.css'))
+		{	
+			return array("status"=>2,"desc"=>"File already exists");
+		}
+		else
+		{
+			copy($_SERVER["DOCUMENT_ROOT"].'/Framework/Core/css/media_query.css',$_SERVER["DOCUMENT_ROOT"].'/'.$dir.'/css/media_query.css');			
 
+			return array("status"=>1,"desc"=>"file created");
+		}	
+	}
 
 
 	

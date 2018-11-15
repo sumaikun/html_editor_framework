@@ -1,35 +1,39 @@
 .tv_size{
 	resize: horizontal;
-	min-width: 1821px;
+	min-width: 1800px;
 	height:1000px;
 }
 
 .desktop_size{
 	resize: horizontal;
-	max-width: 1301px;
-	min-width:1046px;
+	max-width: 1281px;
+	width:1281px;
+	min-width:1025px;
 	height:1000px;
 }
 
 .tablet_size{
 	resize:horizontal;
-	min-width: 789px; 
-	max-width: 1045px;
-	height:800px;
+	min-width: 768px;
+	width: 1024px; 
+	max-width: 1024px;
+	height: 800px;
 }
 
 .phone_size{
 	resize: horizontal;
-	min-width: 502px;
-	max-width: 788px;
-	height:400px;
+	min-width: 481px;
+	max-width: 767px;
+	width: 767px;
+	height: 400px;
 }
 
 
 .small_phone_size{
 	resize: horizontal;
-	min-width: 341px;
-	max-width: 501px;
-	height:350px;
+	min-width: 315px;
+	max-width: 480px;
+	width: 480px;
+	height:360px;
 }
 

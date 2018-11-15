@@ -14,7 +14,7 @@ function test_css_service()
 { 
 	swal({			
 	  title: decode_utf8('¿Esta seguro de guardar?'),
-	  text: '',
+	  text: 'Esto modificara los archivos css',
 	  type: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#3085d6',
@@ -80,6 +80,16 @@ function test_css_service()
 		this.extra = extra;
 	}
 
+
+	function editor_property(name,label,input,dataset,default_value,callback)
+	{
+		this.name = name;
+		this.label = label;
+		this.input = input;
+		this.dataset = dataset;
+		this.default_value = default_value;
+		this.callback = callback;
+	}
 	
 
 	var html_control =
@@ -185,9 +195,23 @@ function test_css_service()
 			
 	            //get last selected_image 
 
+	            //console.log(proyect_folder);
+
+	            //console.log(element[0].currentSrc);
+
+	            //console.log(window.location);
+
+	            let new_url = String(element[0].currentSrc.toString());	            
+
+	            new_url = new_url.replace(window.location.origin,"");
+
+	            new_url = new_url.replace("/"+proyect_folder+"/","");
+
+	            //console.log(new_url);
+
 	            element_to_edit = html_control.events.last_event_by({type:'image'});
 	            
-	            $(element_to_edit.ref_element).attr("src",element[0].currentSrc);		            
+	            $(element_to_edit.ref_element).attr("src",new_url);		            
 				
 	            html_control.events.remove_event(element_to_edit);
 			},
@@ -233,11 +257,132 @@ function test_css_service()
 				if(element_to_add.className.includes("program"))
 				{
 					let generated_html = set_program_ready(element_to_add);
-					$(element_of_reference).html(generated_html);					
+					$(element_of_reference).replaceWith(generated_html);					
 					return true;
 				}
 
 				$(element_of_reference).html($(element_to_add));
+			},
+			modify_link:function(ref_element)
+			{
+				tocallback = function() {						
+						let new_data = $("input[name='inner_href']").val();
+						$(ref_element).find("a").attr('href',new_data)						
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+
+					};
+
+
+				let ep = new editor_property("inner_href","Modificar enlace","text",null,$(ref_element).find("a").attr('href'),tocallback);
+				return ep;	 
+				
+			},
+			modify_text:function(ref_element){
+
+				let tocallback = function() {
+
+						//console.log($("input[name='inner_text']").val());
+						let new_data = $("input[name='inner_text']").val();
+						let copy_text = String($(ref_element)[0].innerText.toString());
+
+						$(ref_element)[0].innerHTML = $(ref_element)[0].innerHTML.replace("&nbsp","");
+						$(ref_element)[0].innerHTML = $(ref_element)[0].innerHTML.replace(copy_text.trim(),new_data);
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+					
+					let ep = new editor_property("inner_text","Modificar texto","text",null,$(ref_element).text(),tocallback);
+
+					return ep;
+					
+			},
+			change_text_alignment:function(ref_element){
+				
+				//console.log(ref_element);
+
+				let tocallback = function() {
+
+						//console.log($("input[name='inner_text']").val());
+						/*if(!ref_element.className.includes("resize-drag"))
+						{
+							$(ref_element).addClass("resize-drag");
+						}*/						
+
+						$(ref_element).css("text-align",$("select[name='inner_alignment']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+
+					let dataset = [{option:"izquierda",value:"left"},{option:"derecha",value:"right"},{option:"centro",value:"center"},{option:"justificado",value:"justify"}];
+					
+					let ep = new editor_property("inner_alignment",decode_utf8("Selecciona alineación de texto"),"select",dataset,null,tocallback);
+
+					return ep;
+			},
+			change_font_size:function(ref_element){
+				
+				//console.log(ref_element);
+
+				let tocallback = function() {											
+
+						$(ref_element).css("font-size",$("input[name='inner_font_size']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+					
+					let ep = new editor_property("inner_font_size",decode_utf8("Selecciona el tamaño del texto"),"text",null,$(ref_element).css("font-size"),tocallback);
+
+					return ep;
+			},
+			modify_padding:function(ref_element){
+				let tocallback = function() {											
+
+						$(ref_element).css("padding",$("input[name='inner_padding_size']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+					
+				let ep = new editor_property("inner_padding_size",decode_utf8("Selecciona el tamaño del padding en % Nota:'No se recomienda modificar el tamaño con transformar ya que provocaria un conflicto' "),"text",null,$(ref_element).css("padding"),tocallback);
+
+				return ep;	
+			},
+			set_data_interval_carousel:function(ref_element){
+				let tocallback = function() {
+						
+						$(ref_element).attr("data-interval",$("input[name='data_interval']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+
+					//let dataset = [{option:"On",value:"true"},{option:"Off",value:"false"}];
+					
+					let ep = new editor_property("data_interval",decode_utf8("Selecciona el tiempo Nota: Toca recargar para ver los cambios"),"text",null,$(ref_element).attr("data-interval"),tocallback);
+
+					return ep;
 			}
 
 		}
@@ -346,10 +491,13 @@ function test_css_service()
 			
 		}
 
+		console.log('css/'+referenced_style+".css");
 
+		console.log(styles_included);
 
 		if(styles_included.indexOf('css/'+referenced_style+".css") == -1)
-		{					
+		{		
+
 			let request = getScope("#StyleCtrl").copy_stylesheets({style:"content-block",folder:proyect_folder,reference:referenced_style});
 			request.then(function(response){
 
@@ -420,14 +568,36 @@ function test_css_service()
 
 	function dynamic_styles_for_editor(){
 		//load editor frame stylesheets in a reference array object.
-		let doc = document.getElementById("editor_frame").contentDocument;
-		//console.log(doc.styleSheets); 
+		let doc = document.getElementById("editor_frame").contentDocument;	  
+		
 
 		  for (sheet in doc.styleSheets) {
 			    	
 		    if(doc.styleSheets[sheet].ownerNode != null){ 
+
+		    	//Nueva actualización si estan en el servidor deberia ser editable y no pertenecen a un 
+		    	//framework
+
+		    	//console.log(doc.styleSheets[sheet]);
+
+		    	// && !doc.styleSheets[sheet].ownerNode.href.includes("media_query")
+
+		    	if(doc.styleSheets[sheet].ownerNode.href.includes(window.location.origin))
+		    	{	
+		    		if(!doc.styleSheets[sheet].ownerNode.href.includes("bootstrap") && !doc.styleSheets[sheet].ownerNode.href.includes("font-awesome"))
+		    		{
+		    			if(!doc.styleSheets[sheet].ownerNode.className.includes("custom_styles"))
+		    			{
+		    				doc.styleSheets[sheet].ownerNode.classList.add("custom_styles");
+		    				//console.log("Estilo interno a agregar la etiqueta");
+		    			} 
+		    			
+		    		}
+		    	}
+
 			    if(doc.styleSheets[sheet].ownerNode.className == "custom_styles")
-			    {						 
+			    {
+			    	//console.log("Leo etiqueta custom style");						 
 			    	//console.log(doc.styleSheets[sheet]);   	
 			    	let generated_css = "";
 			    	for (rule in doc.styleSheets[sheet].rules) {
@@ -456,12 +626,26 @@ function test_css_service()
 			    		css_to_generate.push(css_to_observe);	
 			    	}
 
-			    	
-			    	
+
+
+			    	//Process for keep track of what editable css had been already saved in proyect
+
+			    	let referenced_url = String(doc.styleSheets[sheet].ownerNode.href);	            
+
+	            	referenced_url = referenced_url.replace(window.location.origin,"");
+
+	            	referenced_url = referenced_url.replace("/"+proyect_folder+"/","");
+					
+					//console.log(referenced_url);
+					
+					if(styles_included.indexOf(referenced_url) == -1)
+					{
+						styles_included.push(referenced_url);			    	
+			    	}
 			    }
 		    }
 		}
-
+		//console.log(styles_included);
 		//console.log(css_to_generate);
 	}
 
@@ -500,8 +684,9 @@ function test_css_service()
 		{
 			options =  {
 				"transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
-				"delete":{name: decode_utf8("Eliminar"), icon: "fa-minus"},	        	
-	        	"cancel_operation": {name: decode_utf8("Cancelar operación"), icon: "fa-times-circle"}           
+				"delete":{name: decode_utf8("Eliminar"), icon: "fa-minus"},
+				"properties":{name: decode_utf8("Modificar propiedades del texto"), icon: "fa-edit"},	        	
+	        	"cancel_operation": {name: decode_utf8("Cancelar operación"), icon: "fa-times-circle"}          
 	        };
 		}
 		else
@@ -516,6 +701,8 @@ function test_css_service()
 
 	function get_block_options()
 	{
+		//console.log(html_control.events);
+
 		let block_events = html_control.events.last_event_by({type:'block'});
 		
 		let options = {}
@@ -559,6 +746,48 @@ function test_css_service()
 			//"insert_bootstrap": {name: decode_utf8("Insertar Bootstrap"), icon: "fa-edit"},
 			//"insert_fontawesome": {name: decode_utf8("Insertar libreria de Iconos"), icon: "fa-edit"}
 		}
+		return options;
+	}
+
+	function get_program_options()
+	{
+		let carousel = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
+
+		console.log(carousel);
+
+		if(carousel)
+		{
+			options = {
+				"carousel_properties": {name: decode_utf8("Modificar propiedades de slider"), icon: "fa-edit"}
+			}
+		}
+		else
+		{
+			options = {};
+		}
+
+		return options;
+	}
+
+	function get_button_options()
+	{
+		options = {
+			"transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
+			"properties":{name: decode_utf8("Modificar propiedades del boton"), icon: "fa-edit"}			
+		}
+
+		return options;
+
+	}
+
+	function get_list_options()
+	{
+		options = {
+			"transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
+			"properties":{name: decode_utf8("Modificar propiedades de la lista"), icon: "fa-edit"},
+			"properties_li":{name: decode_utf8("Modificar propiedades del elemento \n de la lista"), icon: "fa-edit"}
+		}
+
 		return options;
 	}
 
@@ -613,6 +842,9 @@ function test_css_service()
     let context_menu_text_process =  function(key, options) {
 		
 		let already_exist = html_control.events.last_event_by({acc:"selected_text"});
+		let properties_to_modify = [];
+
+    	let ep = {};
 
         switch(key)
         {
@@ -631,6 +863,19 @@ function test_css_service()
 					interactjs_editor_frame_process(already_exist);
 				}	
 				break;
+			case "properties":	    	
+				
+				ep = html_control.actions.change_text_alignment(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				ep = html_control.actions.change_font_size(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				generate_html_for_properties_process(properties_to_modify);								
+
+				$("#modalProperties").modal("show");	    	
+
+	    	break;
 			case "delete":
 				if(already_exist)
 				{
@@ -766,18 +1011,11 @@ function test_css_service()
 
 	    	case "clone":
 	    		
-	    		 let already_exist = html_control.events.last_event_by({acc:"panel_that_modify"});
+	    		 let already_exist = html_control.events.last_event_by({acc:"panel_of_reference"});
 
-				 let register_event = new editor_event(reference.ref_element.cloneNode(true),"panel_that_modify","block");
-				 
-				 if(already_exist)
-				 {
-				  	 	html_control.events.replace_event(already_exist,register_event);
-				 } 		
-				 else
-				 {
-			  	 	html_control.events.add_event(register_event);	
-				 }
+				 let register_event = new editor_event(already_exist.ref_element.cloneNode(true),"panel_that_modify_selected","block");				 
+				
+		    	 html_control.events.replace_event(already_exist,register_event);
 
 				 break;	
 
@@ -855,6 +1093,226 @@ function test_css_service()
 			break;
 		}
     }
+
+    let context_menu_program_process =  function(key, options) {
+    	let ep;
+    	let properties_to_modify = [];
+
+    	switch(key)
+        {
+        	case "carousel_properties": 
+
+        	let carousel = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
+			
+			console.log(carousel);
+
+			ep = html_control.actions.set_data_interval_carousel(carousel.ref_element);
+			properties_to_modify.push(ep);
+				
+			generate_html_for_properties_process(properties_to_modify);								
+
+			$("#modalProperties").modal("show");
+
+        	break;
+        	default:
+			break;
+        }
+
+    }
+
+    let context_menu_list_process =  function(key, options) {
+
+    	let reference =	html_control.events.last_event_by({acc:"list_of_reference"});
+
+    	let properties_to_modify = [];
+
+    	let ep = {};
+
+    	let already_exist = {};
+
+    	 switch(key)
+        {
+			case "transform":
+		    	
+		    	if(reference != null)
+	    	  	{  
+		    	  interactjs_editor_frame_process(reference);	    
+		    	}
+		    	else{
+		    	  	swal(
+					  decode_utf8('¡Opps!'),
+					  'No ha seleccionado un elemento para este proceso',
+					  'question'
+					);
+	    		}
+
+	    		break;
+	    	case "properties":
+				
+	    		already_exist = html_control.events.last_event_by({acc:"list_of_reference"});
+				
+				ep = html_control.actions.change_text_alignment(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				ep = html_control.actions.change_font_size(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				generate_html_for_properties_process(properties_to_modify);								
+
+				$("#modalProperties").modal("show");	    	
+
+	    	break;	
+	    	case "properties_li":
+	    		
+				
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});				
+				
+	    		if($(already_exist.ref_element).find("a").length > 0)
+				{
+					//console.log($(already_exist.ref_element).find("a").attr('href'));
+					ep = html_control.actions.modify_link(already_exist.ref_element);	
+					properties_to_modify.push(ep);
+
+				}
+
+				if($(already_exist.ref_element).text().length > 0)
+				{
+					ep = html_control.actions.modify_text(already_exist.ref_element);
+					properties_to_modify.push(ep);						
+				}
+
+				generate_html_for_properties_process(properties_to_modify);								
+
+				$("#modalProperties").modal("show");
+
+			default:
+			break;
+		}
+    }
+
+    let context_menu_button_process =  function(key, options) {
+
+    	//console.log(html_control.events);
+
+    	let reference =	html_control.events.last_event_by({acc:"button_of_reference"});
+
+    	let properties_to_modify = [];
+
+    	let ep = {};
+
+    	 switch(key)
+        {
+			case "transform":
+		    	
+		    	if(reference != null)
+	    	  	{  
+		    	  interactjs_editor_frame_process(reference);	    
+		    	}
+		    	else{
+		    	  	swal(
+					  decode_utf8('¡Opps!'),
+					  'No ha seleccionado un elemento para este proceso',
+					  'question'
+					);
+	    		}
+
+	    		break;
+
+	    	case "properties":
+
+				let already_exist = html_control.events.last_event_by({acc:"button_of_reference"});				
+				
+	    		if($(already_exist.ref_element).find("a").length > 0)
+				{
+					//console.log($(already_exist.ref_element).find("a").attr('href'));
+					ep = html_control.actions.modify_link(already_exist.ref_element);	
+					properties_to_modify.push(ep);
+
+				}
+
+				if($(already_exist.ref_element).text().length > 0)
+				{
+					ep = html_control.actions.modify_text(already_exist.ref_element);
+					properties_to_modify.push(ep);						
+				}												
+
+				ep = html_control.actions.change_text_alignment(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				ep = html_control.actions.change_font_size(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				ep = html_control.actions.modify_padding(already_exist.ref_element);
+				properties_to_modify.push(ep);
+				
+				generate_html_for_properties_process(properties_to_modify);
+
+				$("#modalProperties").modal("show");	    	
+
+	    	break;	
+			default:
+			break;
+		}
+    }
+
+
+    function generate_html_for_properties_process(properties)
+    {
+    	$("#property_body").empty();
+
+    	let html = "";
+    	let count = 0;
+    	properties.forEach(function(property){
+    		count++;
+    		html = "<div class='form-group'>";
+    		html += "<label>"+property.label+"</label>";	
+    			if(property.input == "text")
+    			{
+    				
+    				html += "<input type='text' class='form-control' name='"+property.name+"' ";
+
+    				if(property.default_value != null)
+    				{
+    					html += " value = '"+property.default_value+"' ";
+    				}	
+
+    				html += ">";	
+    			}
+    			if(property.input == "select")
+    			{
+    				html += "<select class='form-control' name='"+property.name+"' >";
+    					if(property.default_value == null)
+						{
+							html += "<option value='' selected>Selecciona</option>";
+						}
+    					
+    					let selected;
+
+    					property.dataset.forEach(function(data){
+    						
+    						if(property.default_value != null && data.value == property.default_value)
+    						{
+    							selected = "selected";
+    						}
+    						else{
+    							selected = "";
+    						}
+
+    						html += "<option value='"+data.value+"' "+selected+">"+data.option+"</option>";
+    					});	
+
+    				html += "</select>";
+    			}
+    		html += "<button id='input_"+count+"' class='btn btn-success form-control' >Modificar</button>";		
+    		html += "</div>";
+    		
+    		$("#property_body").append(html);
+    		$("#input_"+count).bind('click', property.callback);
+
+    	});
+
+    	//return html;	
+    }
 	
 
 	//js related to events //
@@ -882,6 +1340,8 @@ function test_css_service()
 
 			   	proyect_folder = get_folder_proyect(document.getElementById("editor_frame").contentWindow.location.pathname);
 
+			   	//let doc = document.getElementById("editor_frame").contentDocument;
+
 			   	dynamic_styles_for_editor();
 
 			   	//console.log(document.styleSheets);
@@ -908,7 +1368,9 @@ function test_css_service()
 				{ 
 					editor_html.find("*").click(function() {
 							 //console.log("click");
-							 if(window.getSelection){				       
+							 if(window.getSelection){
+							 	//la selección no funciona
+							 	//console.log(this);				       
 							 	//Conseguir información por selección.
 						        /*u_sel = editor_html[0].getSelection();				      
 						     	console.log(this);
@@ -916,7 +1378,32 @@ function test_css_service()
 						      	console.log(count);
 						      	count++;*/
 						     }
+					});				
+					
+					editor_html.find(".carousel.slide").contextmenu(function(e) {
+
+						 console.log(this);
+
+						 let already_exist = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
+ 
+						 let register_event = new editor_event(this,"carousel_slider_of_reference","carousel");
+						 
+						 if(already_exist)
+						 {
+	 				  	 	html_control.events.replace_event(already_exist,register_event);	 				  	 	
+						 } 		
+						 else
+						 {
+					  	 	html_control.events.add_event(register_event);	
+						 }
+
+						 if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-five').contextMenu();
+					  	}	
+
 					});
+					
 
 					editor_html.find(".content-block,.fdb-block").contextmenu( makeDoubleRightClickHandler( function(e) {
 					  	 e.preventDefault();						 
@@ -934,22 +1421,118 @@ function test_css_service()
 					  	 	html_control.events.add_event(register_event);	
 						 }						 					  	 				  	 
 					  	 
-						 
-					  	 $('.context-menu-three').contextMenu();
+					  	if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-three').contextMenu();
+					  	}					 
+					  	 
 
-					}));
+					}));				
 
-					editor_html.find("li,button,a").contextmenu(function(e) {
-					  	
-					  	console.log($(this));
+				
+					editor_html.find("img").contextmenu(function(e) {
+					  	 //e.preventDefault();
+					  	 
+					  	 let event = new editor_event(this,"image_clicked","image",1);
+						  	 
 
+					  	 html_control.events.add_event(event);
+
+					  	 console.log(document.querySelector("input[name='hide_menus']").checked);
+
+					  	 if(!document.querySelector("input[name='hide_menus']").checked)
+					  	 {
+					  	 	$('.context-menu-one').contextMenu();
+					  	 }
+					  	 				  	   
 					});
 
 
+
+					editor_html.find("ul").contextmenu(function(e) {
+					  	
+					  	//console.log($(this));
+
+					  	let already_exist = html_control.events.last_event_by({acc:"list_of_reference"});
+
+						let register_event = new editor_event(this,"list_of_reference","list");
+						 
+						if(already_exist)
+						{							
+	 				  	 	html_control.events.replace_event(already_exist,register_event);
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}						 
+					  	
+						if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-six').contextMenu();
+					  	}
+											
+						
+
+					});
+
+					editor_html.find("li").contextmenu(function(e) {
+					  	
+						//console.log(this);						
+						//$(this).attr('contenteditable','true');						
+
+
+					  	let already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+
+						let register_event = new editor_event(this,"last_li_selected","component_list");
+						 
+						if(already_exist)
+						{							
+	 				  	 	html_control.events.replace_event(already_exist,register_event);
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}				
+											
+
+					});
+
+					editor_html.find("button").contextmenu(function(e) {				  	
+					  	
+
+					  	let already_exist = html_control.events.last_event_by({acc:"button_of_reference"});
+
+						let register_event = new editor_event(this,"button_of_reference","button");
+						 
+						if(already_exist)
+						{							
+	 				  	 	html_control.events.replace_event(already_exist,register_event);
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}			  	
+						
+						if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-seven').contextMenu();
+					  	}
+
+						$(this).attr('contenteditable','true');
+
+						$(this).blur(function(){
+							  //console.log("onblur button");
+							  $(this).attr('contenteditable','false');								
+						});					
+						
+
+					});
+
 					editor_html.find("h1,h2,h3,h4,span,p").contextmenu(function(e) {					
 
-						e.preventDefault();
 						//console.log(this);
+
+						//e.preventDefault();						
 
 						let already_exist = html_control.events.last_event_by({acc:"selected_text"});
 
@@ -970,7 +1553,12 @@ function test_css_service()
 
 						$(this).focus();
 
-						$('.context-menu-two').contextMenu();					
+						if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-two').contextMenu();
+					  	}
+
+											
 						
 						/*if($(this).text().trim() == 'OK') { 
 				           e.preventDefault();
@@ -982,28 +1570,82 @@ function test_css_service()
 				       }*/
 					});
 
-				
-					editor_html.find("img").contextmenu(function(e) {
-					  	 //e.preventDefault();
-					  	 
-					  	 let event = new editor_event(this,"image_clicked","image",1);
-						  	 
-
-					  	 html_control.events.add_event(event);
 
 
-					  	 $('.context-menu-one').contextMenu();				  	   
+					editor_html.find("form").submit(function(e){
+						
+						if($(this).find('.resize-drag').length !== 0)
+						{
+							console.log("found");
+							e.preventDefault();
+						}
+
 					});
+
+					editor_html.find(".resize-drag").click(function(e){
+						console.log("clicked");
+						e.preventDefault();
+					});
+
+					editor_html.find("div").contextmenu(function(event) {
+						
+						//console.log($(this).children());
+
+						if($(this).children().length == 0)
+						{
+							//console.log(this);
+
+							let already_exist = html_control.events.last_event_by({acc:"selected_text"});
+
+							let register_event = new editor_event(this,"selected_text","text");
+							 
+							if(already_exist)
+							{
+								$(already_exist.ref_element).removeAttr("contenteditable");
+		 				  	 	html_control.events.replace_event(already_exist,register_event);
+							} 		
+							else
+							{
+						  	 	html_control.events.add_event(register_event);	
+							} 
+							 
+						  	
+							$(this).attr('contenteditable','true');
+
+							$(this).focus();
+
+							if(!document.querySelector("input[name='hide_menus']").checked)
+						  	{
+						  	 	$('.context-menu-two').contextMenu();
+						  	}	
+						}
+
+						event.stopPropagation();
+    					event.stopImmediatePropagation();
+
+
+						/*control_cicle++;
+						console.log(control_cicle);
+
+						if(control_cicle == 1)
+						{
+							
+						}*/	
+													 
+					});
+
+
+
+
+
 
 				}
 		        
-				editor_html.find("body").debouncedDNI(  function() {
-
-					//console.log("editor body changed");
+				editor_html.find("body").debouncedDNI(  function() {			
 
 					editor_body_events();
 				});	
-			    //console.log('ok frame');
+			  
 			    editor_body_events();			
 
 		});
@@ -1066,7 +1708,11 @@ function test_css_service()
 				  	 	html_control.events.add_event(register_event);	
 					 }	
 
-				  	 $('.context-menu-three').contextMenu();				  		   
+					if(!document.querySelector("input[name='hide_menus']").checked)
+				    {
+				  	 	$('.context-menu-three').contextMenu();
+				  	}
+				  	 				  		   
 				});
 			});				
 		});	
@@ -1088,9 +1734,23 @@ function test_css_service()
 		$.contextMenu(blocks_menu);
 	    //-------/
 
-	    //Menu for Blocks
+	    //Menu for Styles
 	 	var styles_menu =  new context_menu_object('.context-menu-four',context_menu_style_process,get_style_options);
 		$.contextMenu(styles_menu);
+	    //-------/
+
+	    //Menu for Programs
+	    var programs_menu =  new context_menu_object('.context-menu-five',context_menu_program_process,get_program_options);
+		$.contextMenu(programs_menu);
+
+	    //Menu for List
+	 	var list_menu =  new context_menu_object('.context-menu-six',context_menu_list_process,get_list_options);
+		$.contextMenu(list_menu);
+	    //-------/
+
+	    //Menu for Button
+	 	var button_menu =  new context_menu_object('.context-menu-seven',context_menu_button_process,get_button_options);
+		$.contextMenu(button_menu);
 	    //-------/
 
 
@@ -1108,7 +1768,13 @@ function test_css_service()
 	{
 		if(editor_html.find("#media_query").length == 0)
 		{
-			editor_html.find("head link").last().after('<link rel="stylesheet" id="media_query" href="css/media_query.css">');
+			console.log("add media query css file "+proyect_folder);
+			let request = getScope("#StyleCtrl").add_media_query_properties(proyect_folder);
+			request.then(function(response){
+				editor_html.find("head link").last().after('<link rel="stylesheet" id="media_query" href="css/media_query.css">');	
+			});
+			
+			
 		}
 		 		    	   
 		if(editor_html.find(".interactjs").length == 0)
