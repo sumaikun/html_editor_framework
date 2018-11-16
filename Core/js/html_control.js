@@ -380,7 +380,7 @@ function test_css_service()
 
 					//let dataset = [{option:"On",value:"true"},{option:"Off",value:"false"}];
 					
-					let ep = new editor_property("data_interval",decode_utf8("Selecciona el tiempo Nota: Toca recargar para ver los cambios"),"text",null,$(ref_element).attr("data-interval"),tocallback);
+					let ep = new editor_property("data_interval",decode_utf8("Selecciona el tiempo Nota: Toca recargar para ver los cambios , escriba false para detener el slider"),"text",null,$(ref_element).attr("data-interval"),tocallback);
 
 					return ep;
 			}
@@ -649,6 +649,11 @@ function test_css_service()
 		//console.log(css_to_generate);
 	}
 
+	function context_menu_highlight(element)
+	{
+		$(".context_menu_active").removeClass("context_menu_active");
+		$(element).addClass("context_menu_active");
+	}
 
 	function get_image_options()
 	{
@@ -671,6 +676,8 @@ function test_css_service()
 	            "cancel_operation": {name: decode_utf8("Cancelar operación"), icon: "fa-times-circle"}            		            
 	        };	
 		}
+
+		context_menu_highlight(".context-menu-one");
 
 		return options;			    
 	}
@@ -695,6 +702,8 @@ function test_css_service()
 				"insert_text":{name: decode_utf8("Insertar nuevo texto"), icon: "fa-edit"}
 			}
 		}
+
+		context_menu_highlight(".context-menu-two");
 
 		return options;
 	}
@@ -735,6 +744,9 @@ function test_css_service()
 				"new_block": {name: "Insertar bloque vacio", icon: "fa-circle"}
 			}
 		}
+
+		context_menu_highlight(".context-menu-three");
+
 		return options;
 	}
 
@@ -746,6 +758,9 @@ function test_css_service()
 			//"insert_bootstrap": {name: decode_utf8("Insertar Bootstrap"), icon: "fa-edit"},
 			//"insert_fontawesome": {name: decode_utf8("Insertar libreria de Iconos"), icon: "fa-edit"}
 		}
+
+		context_menu_highlight(".context-menu-four");
+
 		return options;
 	}
 
@@ -766,18 +781,9 @@ function test_css_service()
 			options = {};
 		}
 
-		return options;
-	}
-
-	function get_button_options()
-	{
-		options = {
-			"transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
-			"properties":{name: decode_utf8("Modificar propiedades del boton"), icon: "fa-edit"}			
-		}
+		context_menu_highlight(".context-menu-five");
 
 		return options;
-
 	}
 
 	function get_list_options()
@@ -788,8 +794,25 @@ function test_css_service()
 			"properties_li":{name: decode_utf8("Modificar propiedades del elemento \n de la lista"), icon: "fa-edit"}
 		}
 
+		context_menu_highlight(".context-menu-six");
+
 		return options;
 	}
+
+	function get_button_options()
+	{
+		options = {
+			"transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
+			"properties":{name: decode_utf8("Modificar propiedades del boton"), icon: "fa-edit"}			
+		}
+
+		context_menu_highlight(".context-menu-seven");
+
+		return options;
+
+	}
+
+
 
 	let context_menu_image_process =  function(key, options) {
 		let image_scope = getScope("#modalYT");
@@ -1380,32 +1403,13 @@ function test_css_service()
 						     }
 					});				
 					
-					editor_html.find(".carousel.slide").contextmenu(function(e) {
-
-						 console.log(this);
-
-						 let already_exist = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
- 
-						 let register_event = new editor_event(this,"carousel_slider_of_reference","carousel");
-						 
-						 if(already_exist)
-						 {
-	 				  	 	html_control.events.replace_event(already_exist,register_event);	 				  	 	
-						 } 		
-						 else
-						 {
-					  	 	html_control.events.add_event(register_event);	
-						 }
-
-						 if(!document.querySelector("input[name='hide_menus']").checked)
-					  	{
-					  	 	$('.context-menu-five').contextMenu();
-					  	}	
-
-					});
+					
 					
 
 					editor_html.find(".content-block,.fdb-block").contextmenu( makeDoubleRightClickHandler( function(e) {
+					  	
+					  	console.log("here");
+
 					  	 e.preventDefault();						 
 					  	 
 						 let already_exist = html_control.events.last_event_by({acc:"panel_of_reference"});
@@ -1443,6 +1447,8 @@ function test_css_service()
 					  	 if(!document.querySelector("input[name='hide_menus']").checked)
 					  	 {
 					  	 	$('.context-menu-one').contextMenu();
+					  	 	e.stopPropagation();
+    						e.stopImmediatePropagation();
 					  	 }
 					  	 				  	   
 					});
@@ -1469,6 +1475,9 @@ function test_css_service()
 						if(!document.querySelector("input[name='hide_menus']").checked)
 					  	{
 					  	 	$('.context-menu-six').contextMenu();
+					  	 	e.stopPropagation();
+    						e.stopImmediatePropagation();
+					  	 	
 					  	}
 											
 						
@@ -1515,14 +1524,16 @@ function test_css_service()
 						
 						if(!document.querySelector("input[name='hide_menus']").checked)
 					  	{
+					  		e.stopPropagation();
+    						e.stopImmediatePropagation();
 					  	 	$('.context-menu-seven').contextMenu();
 					  	}
 
-						$(this).attr('contenteditable','true');
+						//$(this).attr('contenteditable','true');
 
 						$(this).blur(function(){
 							  //console.log("onblur button");
-							  $(this).attr('contenteditable','false');								
+							  //$(this).attr('contenteditable','false');								
 						});					
 						
 
@@ -1556,6 +1567,9 @@ function test_css_service()
 						if(!document.querySelector("input[name='hide_menus']").checked)
 					  	{
 					  	 	$('.context-menu-two').contextMenu();
+
+					  	 	e.stopPropagation();
+    						e.stopImmediatePropagation();
 					  	}
 
 											
@@ -1617,11 +1631,14 @@ function test_css_service()
 							if(!document.querySelector("input[name='hide_menus']").checked)
 						  	{
 						  	 	$('.context-menu-two').contextMenu();
-						  	}	
+						  	 	event.stopPropagation();
+    							event.stopImmediatePropagation();
+						  	}
+
+						  		
 						}
 
-						event.stopPropagation();
-    					event.stopImmediatePropagation();
+						
 
 
 						/*control_cicle++;
@@ -1632,6 +1649,31 @@ function test_css_service()
 							
 						}*/	
 													 
+					});
+
+
+					editor_html.find(".carousel.slide").contextmenu(function(e) {
+
+						 //console.log(this);
+
+						 let already_exist = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
+ 
+						 let register_event = new editor_event(this,"carousel_slider_of_reference","carousel");
+						 
+						 if(already_exist)
+						 {
+	 				  	 	html_control.events.replace_event(already_exist,register_event);	 				  	 	
+						 } 		
+						 else
+						 {
+					  	 	html_control.events.add_event(register_event);	
+						 }
+
+						 if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-five').contextMenu();
+					  	}	
+
 					});
 
 
@@ -1761,7 +1803,7 @@ function test_css_service()
 	function add_script_to_transform()
 	{
 		editor_html.find("body").append('<script class="interactjs" src="/Framework/Core/js/interact.js"><\/script>');
-		editor_html.find("body").append('<script class="interactjs" src="/Framework/Core/js/basic_drag_and_drop.js"><\/script>');
+		editor_html.find("body").append('<script class="interactjs" src="/Framework/Core/js/relative_drag_and_drop.js"><\/script>');
 	}
 
 	function interactjs_editor_frame_process(html_event)

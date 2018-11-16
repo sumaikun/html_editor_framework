@@ -129,6 +129,10 @@
 			let element2 = document.getElementById("asistant_frame");
     		element.className = size;
     		element2.className = size;
+
+    		$(".screen_menu_active").removeClass("screen_menu_active");
+			console.log("#"+size+"_button");
+			$("#"+size+"_button").addClass("screen_menu_active");
 		}
 		
 
@@ -193,7 +197,18 @@
 							});  		
 						}
 						else{
-							save_process(mode);							
+
+							if(editor_html.find(".resize-drag").length > 0)
+							{
+								apply_all_screens();
+							}
+							else
+							{
+								save_process(mode);	
+							}
+														
+						
+
 						}
 						
 					}

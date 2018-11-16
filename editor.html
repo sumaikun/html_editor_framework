@@ -63,6 +63,21 @@
 
 	</head>
 
+	<style>
+
+		.context_menu_active{
+			background-color: #0B610B;
+		}
+
+		.screen_menu_active{
+			background-color: #3B240B !important;
+		}
+
+		.screen_menu_active:hover{
+			background-color: #3B240B !important;
+		}
+	
+	</style>
 
 
 	<body ng-app="editor_module" class="container-fluid">
@@ -96,17 +111,22 @@
 					<option value="b_4.0">Bootstrap 4.0</option>
 				</select>
 				<button onclick="save_to_server()">Guardar</button>
-				<button onclick="test_css_service()">Guardar cambios css</button>
+				<button onclick="test_css_service()">Guardar cambios de css</button>
 
-				<button title="Tv" class="btn btn-warning" onclick="switch_screen('tv_size')"><i class="fas fa-tv"></i></button>
-				<button title="Escritorio" class="btn btn-warning" onclick="switch_screen('desktop_size')"><i class="fas fa-desktop"></i></button>
-				<button title="Tablet" class="btn btn-warning" onclick="switch_screen('tablet_size')"><i class="fas fa-tablet-alt"></i></button>
-				<button title="med-Celular" class="btn btn-warning" onclick="switch_screen('phone_size')"><i class="fas fa-mobile-alt"></i></button>
-				<button title="celular" class="btn btn-warning" onclick="switch_screen('small_phone_size')"><i class="fas fa-mobile"></i></button>
-				<button onclick="apply_to_screen()">aplicar a pantalla</button>
-				<button onclick="apply_all_screens()">aplicar todos</button>
+				<button title="Tv" class="btn btn-warning" id="tv_size_button" onclick="switch_screen('tv_size')"><i class="fas fa-tv"></i></button>
+				<button title="Escritorio" class="btn btn-warning screen_menu_active" onclick="switch_screen('desktop_size')" id="desktop_size_button"><i class="fas fa-desktop"></i></button>
+				<button title="Tablet" class="btn btn-warning" onclick="switch_screen('tablet_size')" id="tablet_size_button"><i class="fas fa-tablet-alt"></i></button>
+				<button title="med-Celular" class="btn btn-warning" onclick="switch_screen('phone_size')" id="phone_size_button"><i class="fas fa-mobile-alt"></i></button>
+				<button title="celular" class="btn btn-warning" onclick="switch_screen('small_phone_size')" id="small_phone_size_button"><i class="fas fa-mobile"></i></button>
+				<button onclick="apply_to_screen()">aplicar cambios solo a pantalla actual</button>
+				<!--	
+					<button onclick="apply_all_screens()">aplicar cambios a todas las pantallas</button>
+				-->
+				<!--
 				<input type="text" id="free_transform" style='width:"150px;"'>
 				<button class="btn btn-danger" style="margin-left:1px;" onclick="transform_by_reference()" title="transformar por referencia"><i class="fas fa-star"></i></button>				
+				-->
+
 			</div>
 
 		</div>
@@ -136,6 +156,13 @@
 
 				    <!--Content-->
 				    <div class="modal-content">
+
+				    	<div class="modal-header">
+					        <h5 class="modal-title" id="exampleModalLabel">Carga de imagenes</h5>
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					          <span aria-hidden="true">&times;</span>
+					        </button>
+				        </div>
 
 				        <!--Body-->
 				        <div class="modal-body mb-0 p-0" >
