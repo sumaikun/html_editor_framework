@@ -2,6 +2,10 @@
 <html>
 	<head>
 		<title>Editor</title>	
+
+		<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+		<meta http-equiv="Pragma" content="no-cache" />
+		<meta http-equiv="Expires" content="0" />
 		
 		<!-- Jquery -->
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -103,7 +107,11 @@
 				<!--<button onclick="get_html()">Get</button>-->
 				<input type="text" id="url_name" style='width:"150px;"'>
 				<button style="margin-left:1px;" onclick="search_html()">Buscar</button>
-				<button style="margin-left:1px;" onclick="reload_html()">Recargar</button>
+				
+				<!--
+				<button style="margin-left:1px;" onclick="reload_editor()">Recargar</button>
+				-->
+
 				<button style="margin-left:1px;" onclick="create_html()">Crear</button>
 				<select id="bootstrap_version">
 					<option>Bootstrap Version</option>
@@ -195,7 +203,7 @@
 			<div class="modal-dialog modal-lg" role="document" >
 
 			    <!--Content-->
-			    <div class="modal-content resize-drag">
+			    <div class="modal-content resize-drag modal-resize">
 			    	<div class="modal-header">
 				        <h5 class="modal-title" id="exampleModalLabel">Propiedades de elemento html</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -234,6 +242,22 @@
 	<script src="Core/js/iframe_bar.js"></script>
 
 	<script src="Core/js/html_control.js"></script>
+
+	<script>
+		
+		$("#property_body").hover(function(e){
+
+		    $(".modal-resize").removeClass("resize-drag");
+
+		});
+
+		$("#property_body").mouseleave(function(e){
+
+			$(".modal-resize").addClass("resize-drag");	
+
+		});
+
+	</script>
 
 </html>
 

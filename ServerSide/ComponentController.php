@@ -90,7 +90,10 @@ class ComponentController
 		    while (false !== ($entry = readdir($handle))) {
 
 	        if ($entry != "." && $entry != "..") {
-	        		array_push($images_saved, $dir."/".$entry);
+	        		if(strpos($entry,'.jpg') or strpos($entry,'.png') or strpos($entry,'.bmp') or strpos($entry,'.svg'))
+        			{ 
+	        			array_push($images_saved, $dir."/".$entry);
+		        	}
 		        }
 		    }
 
@@ -105,8 +108,19 @@ class ComponentController
 	}
 
 	public function save_image()
-	{		
-		$dir = '../Images';
+	{
+
+		if(isset($this->request["route"]))
+		{
+			$dir = $_SERVER["DOCUMENT_ROOT"].$this->request["route"];		
+		}
+		else
+		{
+			$dir = '../Images';
+		}			
+		
+		//echo $dir;
+
 		$target = $dir."/".$_FILES['file']['name'];
 
 		if(move_uploaded_file( $_FILES['file']['tmp_name'], $target))
@@ -115,6 +129,12 @@ class ComponentController
 		}
 		else{return array("status"=>2,"STATUS"=>"ERROR");}
 
+	}
+
+
+	public function delete_image($request)
+	{
+		unlink($_SERVER["DOCUMENT_ROOT"].$request->image); 
 	}
 
 	public function create_document()
@@ -153,8 +173,13 @@ class ComponentController
 
 		if($request->style_to_copy->style == "fdb-block")
 		{
+
 			$path_to_copy = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/css/froala_blocks.css';
-			copy($_SERVER["DOCUMENT_ROOT"].'/Framework/blocks/css/froala_blocks.css', $path_to_copy);
+
+			if (!file_exists($path_to_copy)) {
+			   copy($_SERVER["DOCUMENT_ROOT"].'/Framework/blocks/css/froala_blocks.css', $path_to_copy);
+			}
+			
 			return array("status"=>1);
 		}
 
@@ -164,19 +189,26 @@ class ComponentController
 			{
 				$path_to_copy = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/css/template_virb.css';
 
-				copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/template_virb.css', $path_to_copy);
-
+				if (!file_exists($path_to_copy)) {
+					copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/template_virb.css', $path_to_copy);
+				}
+					
 				$path_to_copy = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/css/template_virb.min.css';
 
-				copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/template_virb.min.css', $path_to_copy);
-
+				if (!file_exists($path_to_copy)) {
+					copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/template_virb.min.css', $path_to_copy);
+				}
+					
 				$path_to_copy = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/js/template_virbmain.min.js';
 
-				copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/template_virbmain.min.js', $path_to_copy);
+				if (!file_exists($path_to_copy)) {
+					copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/template_virbmain.min.js', $path_to_copy);
+				}
 
 				$path_to_copy = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/js/template_virbscripts.min.js';
-
-				copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/template_virbscripts.min.js', $path_to_copy);
+				if (!file_exists($path_to_copy)) {
+					copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/template_virbscripts.min.js', $path_to_copy);
+				}
 			}
 			else
 			{
@@ -185,7 +217,9 @@ class ComponentController
 
 				if(file_exists($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/'.$request->style_to_copy->reference.'.css')){ 
 
-					copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/'.$request->style_to_copy->reference.'.css', $path_to_copy);
+					if (!file_exists($path_to_copy)) {
+						copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/css/'.$request->style_to_copy->reference.'.css', $path_to_copy);
+					}
 				}
 				else{
 					return array("status"=>2,"desc"=>"No exists");
@@ -196,8 +230,10 @@ class ComponentController
 				{
 					$path_to_copy_program = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/js/program_'.$request->style_to_copy->reference.'.js';
 
-					copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/program_'.$request->style_to_copy->reference.".js", $path_to_copy_program);
-					$scrip_tag = true;
+					if (!file_exists($path_to_copy)) {
+						copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/program_'.$request->style_to_copy->reference.".js", $path_to_copy_program);
+						$scrip_tag = true;
+					}
 				}
 
 				return array("status"=>1,"script_tag"=>$scrip_tag);	

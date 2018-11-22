@@ -1,0 +1,13 @@
+.gallery2 .hide-bullets {
+    list-style:none;
+    margin-left: -40px;
+    margin-top:20px;
+}
+
+.gallery2 .thumbnail {
+    padding: 0;
+}
+
+.gallery2 .carousel-inner>.item>img, .carousel-inner>.item>a>img {
+    width: 100%;
+}

@@ -1,6 +1,6 @@
 var control_cicle = 0;
 
-var css_to_generate = [];
+//var css_to_generate = [];
 
 var editor_html;
 
@@ -12,6 +12,9 @@ var proyect_folder;
 
 function test_css_service()
 { 
+
+	let styles_to_process = editor_html.find(".custom_styles");
+	
 	swal({			
 	  title: decode_utf8('¿Esta seguro de guardar?'),
 	  text: 'Esto modificara los archivos css',
@@ -24,7 +27,7 @@ function test_css_service()
 	  	if (result.value)
 	  	{
 
-	  	  	if(css_to_generate.length == 0)
+	  	  	if(styles_to_process.length == 0)
 			{
 				swal(
 				  decode_utf8('¡Oops!'),
@@ -34,33 +37,26 @@ function test_css_service()
 			}
 			else
 			{
-				console.log(css_to_generate);
-				css_to_generate.forEach(function(stylesheet){
-					let new_css_test = "";
-					for (rule in stylesheet.stylesheet.rules) {
-			    		if(stylesheet.stylesheet.rules[rule].cssText)
-			    		{ 	
-			    			new_css_test +=  stylesheet.stylesheet.rules[rule].cssText+"\n";
-			    		}
-			    	}
+				//console.log(styles_to_process);
+				for(let k in styles_to_process)
+				{
+					if(styles_to_process[k].sheet != null)
+					{
+						//console.log(styles_to_process[k].sheet);
+						let new_css_test = "";
+						for (rule in styles_to_process[k].sheet.rules) {
+							if(styles_to_process[k].sheet.rules[rule].cssText)
+							{ 	
+								new_css_test +=  styles_to_process[k].sheet.rules[rule].cssText+"\n";
+							}
+						}
+						
+						//console.log(remove_dns_server(styles_to_process[k].sheet.href));
 
-			    	if(new_css_test != stylesheet.generated_css)
-			    	{
-			    		console.log(stylesheet.generated_css);
-			    		console.log(new_css_test);
-			    		stylesheet.generated_css = new_css_test;	
-		    			getScope("#StyleCtrl").modify_styles({css:stylesheet.generated_css,route:stylesheet.route});
-			    	}
-			    	else{
-			    		//temporal para que funcione
-			    		stylesheet.generated_css = new_css_test;	
-		    			getScope("#StyleCtrl").modify_styles({css:stylesheet.generated_css,route:stylesheet.route});
+						getScope("#StyleCtrl").modify_styles({css:new_css_test,route:remove_dns_server(styles_to_process[k].sheet.href)});
 
-			    	}
-
-				});
-
-				console.log(css_to_generate);
+				    }
+				}				
 				
 			}	
 
@@ -190,7 +186,27 @@ function test_css_service()
 
 			}
 		},
-		actions:{ 
+		actions:{
+			insert_image:function(element){
+				if(editor_html!=null)
+				{
+					let image_url = String(element[0].currentSrc.toString());	            
+
+	            	image_url = image_url.replace(window.location.origin,"");
+
+	            	image_url = image_url.replace("/"+proyect_folder+"/","");
+					
+					editor_html.find("body").append("<img class='img img-responsive arbitrary_image' src='"+image_url+"'></img>");
+					
+				}
+				else{
+					swal(
+					  decode_utf8('¡Oops!'),
+					  'Aun no hay un documento html para este proceso',
+					  'question'
+					)	
+				}
+			}, 
 			replace_image:function(element){
 			
 	            //get last selected_image 
@@ -214,6 +230,16 @@ function test_css_service()
 	            $(element_to_edit.ref_element).attr("src",new_url);		            
 				
 	            html_control.events.remove_event(element_to_edit);
+			},
+			change_page_ico:function(element){
+
+				 let new_url = String(element[0].currentSrc.toString());	            
+
+	            new_url = new_url.replace(window.location.origin,"");
+
+	            new_url = new_url.replace("/"+proyect_folder+"/","");
+
+				editor_html.find('link[rel="shortcut icon"]').attr('href', new_url);
 			},
 			cancel_last_operation:function(event){
 				html_control.events.remove_event(event);
@@ -289,7 +315,7 @@ function test_css_service()
 						let new_data = $("input[name='inner_text']").val();
 						let copy_text = String($(ref_element)[0].innerText.toString());
 
-						$(ref_element)[0].innerHTML = $(ref_element)[0].innerHTML.replace("&nbsp","");
+						$(ref_element)[0].innerHTML = $(ref_element)[0].innerHTML.replace("&nbsp;","");
 						$(ref_element)[0].innerHTML = $(ref_element)[0].innerHTML.replace(copy_text.trim(),new_data);
 					
 						swal(
@@ -366,6 +392,24 @@ function test_css_service()
 
 				return ep;	
 			},
+			change_classNames:function(ref_element)
+			{
+				let tocallback = function() {
+						
+					ref_element.className = $("input[name='inner_classname']").val(); 
+					swal(
+					  decode_utf8('¡Bien!'),
+					  'Se ha modificado el parametro',
+					  'success'
+					);
+				};
+
+				//let dataset = [{option:"On",value:"true"},{option:"Off",value:"false"}];
+				
+				let ep = new editor_property("inner_classname",decode_utf8("Clases"),"text",null,ref_element.className,tocallback);
+
+				return ep;
+			},
 			set_data_interval_carousel:function(ref_element){
 				let tocallback = function() {
 						
@@ -380,9 +424,38 @@ function test_css_service()
 
 					//let dataset = [{option:"On",value:"true"},{option:"Off",value:"false"}];
 					
-					let ep = new editor_property("data_interval",decode_utf8("Selecciona el tiempo Nota: Toca recargar para ver los cambios , escriba false para detener el slider"),"text",null,$(ref_element).attr("data-interval"),tocallback);
+					let ep = new editor_property("data_interval",decode_utf8("Selecciona el tiempo, Nota: Toca recargar para ver los cambios , escriba false para detener el slider"),"text",null,$(ref_element).attr("data-interval"),tocallback);
 
 					return ep;
+			},
+			change_background_image:function(element){
+				let background_image =  html_control.events.last_event_by({acc:'background_image_selected'});
+				let imageUrl = String(element[0].currentSrc.toString());
+	            imageUrl = imageUrl.replace(window.location.origin,"");
+	            imageUrl = imageUrl.replace("/"+proyect_folder+"/","");
+				$(background_image.ref_element).css('background-image', 'url("' + imageUrl + '")');
+			},
+			assoc_parent:function(element)
+			{
+				$(element.ref_element).removeClass("resize-drag");
+				console.log($(element.ref_element).parent());
+				$(element.ref_element).parent().addClass("resize-drag");
+				//console.log(element);
+			},
+			delete_html_element:function(element)
+			{
+				swal({			
+				  title: decode_utf8('¿Esta seguro/a?'),
+				  text: decode_utf8('Va a eliminar un elemento de la página'),
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Si, !adelante!'			
+				}).then((result) => {					
+					$(element.ref_element).remove();
+					html_control.events.remove_event(element);
+				});
 			}
 
 		}
@@ -439,7 +512,7 @@ function test_css_service()
 		}*/
 		
 		console.log(element_to_check.className);
-		console.log(styles_included);
+		//console.log(styles_included);
 
 		if(element_to_check.className == "fdb-block")
 		{
@@ -485,7 +558,7 @@ function test_css_service()
 				}	
 				
 				styles_included.push('css/froala_blocks.css');
-				dynamic_styles_for_editor();
+				//dynamic_styles_for_editor();
 
 			});
 			
@@ -558,7 +631,7 @@ function test_css_service()
 				}
 
 				styles_included.push('css/'+referenced_style+".css");
-				dynamic_styles_for_editor();
+				//dynamic_styles_for_editor();
 
 			});
 				
@@ -575,12 +648,15 @@ function test_css_service()
 			    	
 		    if(doc.styleSheets[sheet].ownerNode != null){ 
 
-		    	//Nueva actualización si estan en el servidor deberia ser editable y no pertenecen a un 
-		    	//framework
 
-		    	//console.log(doc.styleSheets[sheet]);
+				if(doc.styleSheets[sheet].ownerNode.href == null)
+				{
+					//Prevent error when page load fail
+					return;
+				}
 
-		    	// && !doc.styleSheets[sheet].ownerNode.href.includes("media_query")
+
+		    	// If is on server should edit
 
 		    	if(doc.styleSheets[sheet].ownerNode.href.includes(window.location.origin))
 		    	{	
@@ -596,37 +672,7 @@ function test_css_service()
 		    	}
 
 			    if(doc.styleSheets[sheet].ownerNode.className == "custom_styles")
-			    {
-			    	//console.log("Leo etiqueta custom style");						 
-			    	//console.log(doc.styleSheets[sheet]);   	
-			    	let generated_css = "";
-			    	for (rule in doc.styleSheets[sheet].rules) {
-			    		if(doc.styleSheets[sheet].rules[rule].cssText)
-			    		{ 	
-			    			generated_css +=  doc.styleSheets[sheet].rules[rule].cssText+"\n";
-			    		}
-			    	}
-			    	
-			    	//console.log(doc.styleSheets[sheet]);
-			    	
-			    	let css_to_observe = {stylesheet:doc.styleSheets[sheet],generated_css:generated_css,route:remove_dns_server(doc.styleSheets[sheet].href)};			    	
-			    	
-			    	let add_to_css = true;
-
-			    	css_to_generate.forEach(function(css){
-			    		//console.log(css);
-			    		if(css_to_observe.route == css.route)
-			    		{
-			    			add_to_css = false;
-			    		}
-			    	});
-			    	
-			    	if(add_to_css)
-			    	{ 	
-			    		css_to_generate.push(css_to_observe);	
-			    	}
-
-
+			    {		    
 
 			    	//Process for keep track of what editable css had been already saved in proyect
 
@@ -657,25 +703,39 @@ function test_css_service()
 
 	function get_image_options()
 	{
-		let image_events = html_control.events.last_event_by({type:'image'});
+		let image_events = html_control.events.last_event_by({acc:'image_clicked'});
+		let background_image =  html_control.events.last_event_by({acc:'background_image_selected'});
 		let options = {};
 		
-		if(image_events == null)
-		{
 			options =    {
 	        	"watch_images": {name: "Ver imagenes", icon: "fa-eye"},
-	        	"insert_image": {name: "Insertar imagen", icon: "fa-edit"}            		            
+	        	"insert_image": {name: "Insertar imagen", icon: "fa-edit"},
+	        	"change_favicon": {name: "Cambiar favicon de pagina", icon: "fa-circle"}            		            
 	        };	
-		}
-		else
+		
+		
+		if(background_image != null)
 		{
-			options =    {		        	
-	            "change_image": {name: "Cambiar Imagen", icon: "fa-file"},
-	            "transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
-	            "delete":{name: decode_utf8("Eliminar"), icon: "fa-minus"},
-	            "cancel_operation": {name: decode_utf8("Cancelar operación"), icon: "fa-times-circle"}            		            
-	        };	
+			options = {
+				"change_background_image":{name:"Modificar Imagen del fondo",icon: "fa-edit"}
+			}
 		}
+
+		if(image_events != null)
+		{
+			options["change_image"] = {name: "Cambiar Imagen", icon: "fa-file"};
+			options["transform"] = {name: decode_utf8("Transformar"), icon: "fa-star"};
+			options["delete"] = {name: decode_utf8("Eliminar"), icon: "fa-minus"};
+			options["cancel_operation"] = {name: decode_utf8("Cancelar operación"), icon: "fa-times-circle"};
+
+			if(image_events.ref_element.className.includes("resize-drag"))
+			{
+				options["assoc_layer"] = {name: decode_utf8("Asociar transformación a capa"), icon: "fa-edit"};	
+			}
+			 	
+		}
+
+
 
 		context_menu_highlight(".context-menu-one");
 
@@ -753,11 +813,26 @@ function test_css_service()
 
 	function get_style_options()
 	{
-		options = {
-			"insert_style": {name: decode_utf8("Insertar estilo"), icon: "fa-edit"}
+
+		let options = {};
+
+		let styles_copied = html_control.events.last_event_by({acc:"copy_styles_from_other_page"});
+
+		if(editor_html != null)
+		{
+			options["copy_style"] = {name:"Copiar estilos de pagina",icon:"fa-star"}; 
+		}
+		if(styles_copied != null)
+		{
+			options["paste_styles"] = {name:"Pegar estilos",icon:"fa-edit"};
+		}
+
+
+
+		options["insert_style"] = {name: decode_utf8("Insertar estilo"), icon: "fa-edit"}
 			//"insert_bootstrap": {name: decode_utf8("Insertar Bootstrap"), icon: "fa-edit"},
 			//"insert_fontawesome": {name: decode_utf8("Insertar libreria de Iconos"), icon: "fa-edit"}
-		}
+		
 
 		context_menu_highlight(".context-menu-four");
 
@@ -791,7 +866,12 @@ function test_css_service()
 		options = {
 			"transform":{name: decode_utf8("Transformar"), icon: "fa-star"},
 			"properties":{name: decode_utf8("Modificar propiedades de la lista"), icon: "fa-edit"},
-			"properties_li":{name: decode_utf8("Modificar propiedades del elemento \n de la lista"), icon: "fa-edit"}
+			"properties_li":{name: decode_utf8("Modificar propiedades del elemento \n de la lista"), icon: "fa-edit"},
+			"move_up_li":{name: decode_utf8("Mover a siguiente posición"), icon: "fa-arrow-right"},
+			"move_down_li":{name: decode_utf8("Mover a posición anterior"), icon: "fa-arrow-left"},
+			"insert_li":{name: decode_utf8("Insertar nuevo elemento a la lista"), icon: "fa-star"},
+			"insert_list":{name: decode_utf8("Insertar lista dentro de la lista"), icon: "fa-star"},
+			"delete_li":{name: decode_utf8("Eliminar elemento de la lista"), icon: "fa-delete"}
 		}
 
 		context_menu_highlight(".context-menu-six");
@@ -820,35 +900,76 @@ function test_css_service()
         console.log(m);
         //window.console && console.log(m) || alert(m);
         let event_img = html_control.events.last_event_by({type:'image'});
+        let image;
         switch(key)
         {
         	case "watch_images":
 			    	$("#modalYT").modal("show");
+			    	image_scope.gallery_mode = null;
 			    	image_scope.load_images();
 		        break;
 
+		    case "insert_image":
+		    		$("#modalYT").modal("show");
+		    		image_scope.gallery_mode = 1;
+		    		image_scope.load_images();
+		    	break;
+
 		    case "change_image":
 		    	   $("#modalYT").modal("show");
-			       image_scope.ready_change_image = true;
+			       image_scope.gallery_mode = 2;
 			       image_scope.load_images();
 		        break;
 
 		    case "transform":		    	   
-		    	   let image = html_control.events.last_event_by({type:'image'});
+		    	   image = html_control.events.last_event_by({type:'image'});
 				   interactjs_editor_frame_process(image);	        		
-	        	break;    
-
+	        	break;
+	        case "assoc_layer":	
+	        		image = html_control.events.last_event_by({acc:'image_clicked'});
+				    html_control.actions.assoc_parent(image);	        		
+	        	break;	
+	        case "change_background_image":	        		
+	        		$("#modalYT").modal("show");
+				    image_scope.gallery_mode = 3;
+				    image_scope.load_images();	        			    
+	        	break;
+	        
+	        case "change_favicon":
+	        		if(editor_html)
+	        		{
+	        			if(!editor_html.find('link[rel="shortcut icon"]').get(0))
+	        			{	        				
+	        				editor_html.find('head').append('<link href="your_favicon_name.ico" rel="shortcut icon" type="image/x-icon" />');	        				 
+	        			}
+	        			$("#modalYT").modal("show");
+	        			image_scope.gallery_mode = 4;
+				    	image_scope.load_images();	
+	        		}
+	        		else
+	        		{
+	        			swal(
+						  decode_utf8('¡Rayos!'),
+						  'Aun no hay una pagina para este proceso',
+						  'question'
+						)
+	        		}
+	        		//$('link[rel="shortcut icon"]').attr('href', src);	
+	        		// $('head').append('<link href="your_favicon_name.ico" rel="shortcut icon" type="image/x-icon" />');
+	        	break;
+		    
 		    case "cancel_operation":
 		    	   if(event_img)
 		    	   {
 		    	   	 html_control.actions.cancel_last_operation(event_img);
 		    	   }		    	   
 		        break;   	
+		    
 		    case "delete":
 				if(event_img)
 				{
-					$(event_img.ref_element).remove();	
-		    	  	html_control.events.remove_event(event_img);
+					html_control.actions.delete_html_element(event_img);
+						
 				}	
 				break;    
 		    default:
@@ -880,6 +1001,23 @@ function test_css_service()
 				}
 
 				break;
+			case "insert_text":
+				
+				if(editor_html!=null)
+				{
+					editor_html.find("body").append("<span style='text-align:center;position:absolute' class='arbitrary_text'>SOY UN NUEVO TEXTO</span>");
+					editor_html.find(".arbitrary_text").last().attr("contenteditable",true);
+					editor_html.find(".arbitrary_text").last().focus();
+				}
+				else{
+					swal(
+					  decode_utf8('¡Oops!'),
+					  'Aun no hay un documento html para este proceso',
+					  'question'
+					)	
+				}
+
+				break;	
 			case "transform":
 				if(already_exist)
 				{
@@ -902,8 +1040,8 @@ function test_css_service()
 			case "delete":
 				if(already_exist)
 				{
-					$(already_exist.ref_element).remove();	
-		    	  	html_control.events.remove_event(already_exist);
+					html_control.actions.delete_html_element(already_exist);	
+		    	  	
 				}	
 				break;		
 			default:
@@ -1045,9 +1183,10 @@ function test_css_service()
 		    case "delete":
 
 		    	  if(reference != null)
-		    	  { 	
-		    	  	$(reference.ref_element).remove();	
-		    	  	html_control.events.remove_event(reference);	
+		    	  {	
+		    	  	html_control.actions.delete_html_element(reference);	    	  		    	  	 	
+		    	  	//$(reference.ref_element).remove();	
+		    	  	//html_control.events.remove_event(reference);	
 		    	  }else{
 		    	  	swal(
 					  decode_utf8('¡Opps!'),
@@ -1073,6 +1212,10 @@ function test_css_service()
     }
 
     let context_menu_style_process =  function(key, options) {
+    	 
+    	 let already_exist;
+    	 let register_event;
+
     	 switch(key)
         {
 			case "insert_style":
@@ -1109,6 +1252,33 @@ function test_css_service()
 	                  footer: ''
 	                });	
 				}
+
+			break;
+
+			case "copy_style":
+
+				console.log(styles_included);
+
+				let styles_to_copy = styles_included;
+
+				already_exist = html_control.events.last_event_by({acc:"copy_styles_from_other_page"});
+				register_event = new editor_event(styles_to_copy,"copy_styles_from_other_page","style");
+				 
+				if(already_exist)
+				{
+					
+				  	 	html_control.events.replace_event(already_exist,register_event);
+				} 		
+				else
+				{
+			  	 	html_control.events.add_event(register_event);	
+				}
+
+			break;
+
+			case "paste_styles":
+				let styles_copied = html_control.events.last_event_by({acc:"copy_styles_from_other_page"});
+				console.log(styles_copied.ref_element);
 
 			break;
 
@@ -1153,6 +1323,10 @@ function test_css_service()
 
     	let already_exist = {};
 
+    	let check;
+
+    	let copy;
+
     	 switch(key)
         {
 			case "transform":
@@ -1188,7 +1362,9 @@ function test_css_service()
 	    	case "properties_li":
 	    		
 				
-				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});				
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+
+				console.log(already_exist);				
 				
 	    		if($(already_exist.ref_element).find("a").length > 0)
 				{
@@ -1200,14 +1376,144 @@ function test_css_service()
 
 				if($(already_exist.ref_element).text().length > 0)
 				{
-					ep = html_control.actions.modify_text(already_exist.ref_element);
-					properties_to_modify.push(ep);						
+					if($(already_exist.ref_element).children("ul").get(0) != null)
+					{						
+						ep = html_control.actions.modify_text($(already_exist.ref_element).children().first().get(0));
+						properties_to_modify.push(ep);
+					}
+					else
+					{ 
+						ep = html_control.actions.modify_text(already_exist.ref_element);
+						properties_to_modify.push(ep);						
+					}						
 				}
+
+				ep = html_control.actions.change_classNames(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				
 
 				generate_html_for_properties_process(properties_to_modify);								
 
 				$("#modalProperties").modal("show");
 
+				break;
+
+			case "move_up_li":
+
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+
+				//console.log($(already_exist.ref_element).next("li").get(0));				
+	
+				if($(already_exist.ref_element).next("li").get(0) != null)
+				{
+					let after = $(already_exist.ref_element).next("li").get(0);
+					$(after).after($(already_exist.ref_element));
+					//console.log("make process");
+				}
+
+			break;
+
+			case "move_down_li":
+
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+				
+				//console.log($(already_exist.ref_element).prev("li").get(0));
+
+				if($(already_exist.ref_element).prev("li").get(0) != null)
+				{
+					let before = $(already_exist.ref_element).prev("li").get(0);
+					$(before).before($(already_exist.ref_element));
+					
+					//console.log("make process");
+				}
+
+			break;
+
+			case "insert_li":
+
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+				
+				check = $(already_exist.ref_element).parent("ul").find("li"); 
+				
+				copy = check.get(0).cloneNode(true);				
+				
+				$(copy)[0].innerHTML = $(copy)[0].innerHTML.replace($(copy)[0].innerText.trim(),"Nuevo elemento");
+				
+				if($(copy).children("a").length > 0)
+				{
+					$(copy).children("a")[0].href="#";
+					console.log($(copy).children("a")[0]);
+				}
+				
+				if($(copy).children("ul").length > 0)
+				{
+					$(copy).children("ul").remove();
+				}
+				
+				$(already_exist.ref_element).after(copy);
+
+				//falta caso para tabs
+
+
+			break;
+
+			case "insert_list":
+
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+				
+				if($(already_exist.ref_element).children("ul").length == 0)
+				{ 
+					check = $(already_exist.ref_element).parent("ul").find("li:has(> ul)"); 
+					if(check.get(0))
+					{
+						copy = check.get(0).cloneNode(true);
+						$(copy).children("a")[0].innerHTML = $(copy).children("a")[0].innerHTML.replace($(copy).children("a")[0].innerText.trim(),$(already_exist.ref_element).children("a")[0].innerText.trim());
+						$(copy).children("ul").children("li").not(':first').remove();
+						$(copy).children("ul").children("li")[0].innerHTML = $(copy).children("ul").children("li")[0].innerHTML.replace($(copy).children("ul").children("li")[0].innerText.trim(),"Nuevo elemento");
+						$(already_exist).replaceWith(copy);
+					}
+					else{
+						swal(
+						  decode_utf8('¡Opps!'),
+						  "No tengo una referencia para generar este resultado",
+						  'question'
+						);						
+					}
+				}
+				else
+				{
+					swal(
+						  decode_utf8('¡Opps!'),
+						  "Ya tiene una lista internamente, no se puede hacer este proceso",
+						  'question'
+					);
+					
+				}
+
+			break;	
+
+
+			case "delete_li":
+				
+				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+				
+				if($(already_exist.ref_element).parent("ul").children("li").length > 1)
+				{
+					html_control.actions.delete_html_element(already_exist);
+				}
+				else
+				{
+					swal(
+					  decode_utf8('¡Opps!'),
+					  'No se puede dejar a la lista sin ningun elemento',
+					  'question'
+					);
+				}
+				
+				
+
+			break;
 			default:
 			break;
 		}
@@ -1343,6 +1649,21 @@ function test_css_service()
 
 		//console.log(document.styleSheets);
 
+		init = function(){ 
+
+			let current_url = new URL(window.location);
+			let page_parameter = current_url.searchParams.get("page");
+			if(page_parameter != null)
+			{
+				$("#url_name").val(page_parameter);
+				search_html();
+			}
+
+		}
+
+		init();
+
+
 		window.current_event = {event:"none"};
 
 
@@ -1350,6 +1671,8 @@ function test_css_service()
 
 			$('#editor_frame').on('load',function (){
 		   	
+			   	styles_included = [];
+
 			   	editor_html = $(this).contents();
 
 			   	//
@@ -1435,7 +1758,7 @@ function test_css_service()
 
 				
 					editor_html.find("img").contextmenu(function(e) {
-					  	 //e.preventDefault();
+					 	 //e.preventDefault();
 					  	 
 					  	 let event = new editor_event(this,"image_clicked","image",1);
 						  	 
@@ -1605,9 +1928,41 @@ function test_css_service()
 						
 						//console.log($(this).children());
 
-						if($(this).children().length == 0)
+						
+						if($(this).css('background-image') && $(this).css('background-image')!= "none")
 						{
-							//console.log(this);
+							console.log("Has a background");
+
+
+
+							let already_exist = html_control.events.last_event_by({acc:"background_image_selected"});
+
+							let register_event = new editor_event(this,"background_image_selected","image");
+							 
+							if(already_exist)
+							{
+								
+		 				  	 	html_control.events.replace_event(already_exist,register_event);
+							} 		
+							else
+							{
+						  	 	html_control.events.add_event(register_event);	
+							}						  	
+							
+							if(!document.querySelector("input[name='hide_menus']").checked)
+						  	{
+						  	 	$('.context-menu-one').contextMenu();
+						  	 	event.stopPropagation();
+    							event.stopImmediatePropagation();
+						  	}
+						}
+
+
+
+
+						if($(this).children("div,ul,nav,img,h1,h2,h3,h4,span,p,i,section,header,footer,article").length == 0)
+						{
+							console.log(this);
 
 							let already_exist = html_control.events.last_event_by({acc:"selected_text"});
 
@@ -1638,6 +1993,18 @@ function test_css_service()
 						  		
 						}
 
+						/*
+						Just javascript:
+
+						var hasBGImage = element.style.backgroundImage !== '';
+						Using jQuery:
+
+						var hasBGImage = $(element).css('background-image') !== 'none';
+						*/
+
+
+						
+						
 						
 
 
@@ -1859,3 +2226,18 @@ function test_css_service()
 	  		}
 		}
 	}
+
+
+	function set_only_media_query(html_event)
+	{
+		if(editor_html.find("#media_query").length == 0)
+		{
+			console.log("add media query css file "+proyect_folder);
+			let request = getScope("#StyleCtrl").add_media_query_properties(proyect_folder);
+			request.then(function(response){
+				editor_html.find("head link").last().after('<link rel="stylesheet" id="media_query" href="css/media_query.css">');	
+			});			
+			
+		}
+
+	}	

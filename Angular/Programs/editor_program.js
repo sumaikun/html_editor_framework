@@ -25,6 +25,8 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
 }]).controller('ImageController',['$scope','RestfulService'
     ,function($scope,RestfulService){       
 
+        $scope.gallery_mode = null;
+
         $scope.images = {};
 
         $scope.view = 'Angular/Views/Gallery/gallery.html';
@@ -35,6 +37,11 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
 
         $scope.load_images = function()
         {
+            if($("input[name='folder_to_add']").val().length > 0)
+            {                  
+                return $scope.load_from_folder();
+            }
+
             RestfulService.launch({Acc:"get_images"}).then(function(response){
                 $scope.images = response.data.images;
                 swal(
@@ -44,6 +51,26 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
                 );
                 init_carousel();
             });
+        }
+
+        $scope.delete_image = function()
+        {
+            swal({      
+                  title: decode_utf8('¡Esta seguro de borrar la imagen!'),
+                  text: decode_utf8('Después de eliminada la imagen no podrá recuperarse'),
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Si, !adelante!'     
+                }).then((result) => {
+                  let element = $("#myCarousel .active").find('img');
+                  RestfulService.launch({Acc:"delete_image",image:element.attr("src")}).then(function(response){
+                      $scope.load_images();                 
+                      $("div.ng-scope.item").first().addClass("active");
+                  });
+                  
+            });      
         }
 
         $scope.load_from_folder = function()
@@ -78,7 +105,8 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
                           '',
                           'success'
                         );
-                        init_carousel();       
+                        init_carousel();
+                        $("input[name='folder_added']").val($("input[name='folder_to_add']").val());       
                     }
                 });
             }          
@@ -100,7 +128,9 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
                 case "Upload":
                     upload();
                     break;
-                                   
+                case "Delete":
+                    $scope.delete_image();
+                  break;      
                 default:
                     swal(
                       'The Internet?',
@@ -134,7 +164,14 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
                   }
                   reader.readAsDataURL(file);
 
-                   var data = {file:file,Acc:"save_image"};
+                  if($("input[name='folder_added']").val().length > 0)
+                  {                  
+                      var data = {file:file,Acc:"save_image",route:$("input[name='folder_to_add']").val()};
+                  }
+                  else
+                  {
+                     var data = {file:file,Acc:"save_image"};
+                  }                   
                     
                    RestfulService.by_form(data).then(function(response){
                         if(response.data.STATUS == "OK")
@@ -164,8 +201,23 @@ angular.module("editor_module",["restful_module"]).factory('RequestInterceptor',
         //Transform data
 
         $scope.change_picture = function(){
-            var element = $("#myCarousel .active").find('img');
+            let element = $("#myCarousel .active").find('img');
             html_control.actions.replace_image(element);
+        }
+
+        $scope.change_background = function(){
+            let element = $("#myCarousel .active").find('img');
+            html_control.actions.change_background_image(element); 
+        }
+
+        $scope.change_ico = function(){
+            let element = $("#myCarousel .active").find('img');
+            html_control.actions.change_page_ico(element); 
+        }
+
+        $scope.insert_picture = function(){
+            let element = $("#myCarousel .active").find('img');
+            html_control.actions.insert_image(element); 
         }
 
 

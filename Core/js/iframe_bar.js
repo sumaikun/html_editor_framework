@@ -26,10 +26,13 @@
 			if(editor_html != null)
 			{
 			
-				if(editor_html.find(".interactjs").length != 0)
+				if(editor_html.find(".resize-drag").length != 0)
 				{
-					console.log("Borro interact por si acaso");
+					console.log("Borro interact por si acaso");										
+
 					save_process("normal").then(function(response){
+						
+
 						let url_name = $("#url_name").val();
 
 						if(url_name == "")
@@ -65,12 +68,19 @@
 					return alert("No puede mandar un valor vacio");
 				}
 
-				$("#editor_frame").attr("src",url_name);	
+				$("#editor_frame").attr("src",url_name+"?gen_rand="+Math.round(Math.random() * 10000000));	
 			}
+		}
+
+		function reload_editor()
+		{
+			location.href = URL_add_parameter(location.href, 'page',$("#url_name").val());
+			//location.reload(true);
 		}
 
 		function reload_html()
 		{
+			console.log("reload html");
 			let iframe = document.getElementById("editor_frame");
 			//console.log(iframe);
 			//console.log(iframe.src);
@@ -86,11 +96,14 @@
 				
 				let generated_url = iframe.src.replace(window.location.origin,"");
 
-				console.log(generated_url);
+				let random_number = Math.ceil((Math.random() * 10000000000000000) + 1);
 
-				let random_number = Math.ceil((Math.random() * 100000) + 1);
+				generated_url = generated_url+"?reload="+random_number;
+
+				console.log(generated_url);				
 				
-				iframe.src = generated_url+"?random="+random_number;
+				iframe.src = generated_url;
+
 			}			
 		}
 
@@ -231,7 +244,7 @@
 		function save_process(mode)
 		{
 
-			console.log(editor_html.find(".wow"));
+			//console.log(editor_html.find(".wow"));
 
 			editor_html.find(".wow").removeAttr("style");
 
@@ -240,7 +253,7 @@
 
 			if(mode == "normal")
 			{
-				editor_html.find("h1,h2,h3,h4,span,p").removeAttr("contenteditable");
+				editor_html.find("h1,h2,h3,h4,span,p,div").removeAttr("contenteditable");
 
 				editor_html.find(".interactjs").remove();
 
@@ -274,7 +287,11 @@
 			
 			//console.log(html);
 
-			let url = $("#url_name").val();
+			//let url = $("#url_name").val();
+
+			let url = document.getElementById("editor_frame").contentWindow.location.pathname;
+
+			console.log(url);
 
 			let html = document.getElementById('editor_frame').contentWindow.document.documentElement.outerHTML;
 
@@ -283,7 +300,7 @@
 				if(mode=="normal")
 				{ 
 					reload_html();
-					search_html();
+					//search_html();
 				}	
 			});
 		}
@@ -293,12 +310,14 @@
 			console.log("onbeforeunload");
 			if(editor_html != null)
 			{
-				if(editor_html.find(".interactjs").length != 0)
+				if(editor_html.find(".resize-drag").length != 0)
 				{
 					console.log("Borro interact por si acaso");
+					
 					save_process("normal").then(function(response){
 						console.log("Interact borrado antes de guardar");
 					});
+						
 				}
 			}
 
@@ -385,7 +404,7 @@
 						  	//Conseguir stylesheet de media querys, conseguir la regla de all
 						  	if(doc.styleSheets[sheet].ownerNode.id == "media_query")
 						  	{
-						  		let elements_to_style = editor_html.find(".resize-drag");
+						  		let elements_to_style = editor_html.find(".resize-drag , .custom_style_modified");
 						  		
 						  		//console.log(elements_to_style);
 

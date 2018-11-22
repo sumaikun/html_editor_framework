@@ -17,6 +17,7 @@
 
 <div class="container">
     <input  style=" font-size: 40px;" name="folder_to_add" type="text">
+    <input type="hidden" name="folder_added">
     <button ng-click="load_from_folder()">Buscar en carpeta</button> 
     <div id="main_area">
         <!-- Slider -->
@@ -45,11 +46,20 @@
                                     </div>                                                                        
                                 </div>
 
-                                <div ng-if="ready_change_image" class="form-group">
-                                    <button ng-click="change_picture()" class="btn btn-success form-control">Cambiar</button>
+                                <div ng-if="gallery_mode == 1" class="form-group">
+                                    <button ng-click="insert_picture()" data-dismiss="modal" class="btn btn-success form-control">Insertar</button>
+                                </div>
+                                <div ng-if="gallery_mode == 2" class="form-group">
+                                    <button ng-click="change_picture()" data-dismiss="modal" class="btn btn-success form-control">Cambiar imagen</button>
+                                </div>
+                                <div ng-if="gallery_mode == 3" class="form-group">
+                                    <button ng-click="change_background()" data-dismiss="modal" class="btn btn-success form-control">Cambiar fondo</button>
+                                </div>
+                                 <div ng-if="gallery_mode == 4" class="form-group">
+                                    <button ng-click="change_ico()" data-dismiss="modal" class="btn btn-success form-control">Cambiar fondo</button>
                                 </div>
 
-                                <!-- Carousel nav -->
+                                 <!-- Carousel nav -->
                                 <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
                                     <span class="glyphicon glyphicon-chevron-left"></span>
                                 </a>
