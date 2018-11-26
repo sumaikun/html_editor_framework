@@ -287,7 +287,7 @@ function test_css_service()
 					return true;
 				}
 
-				$(element_of_reference).html($(element_to_add));
+				$(element_of_reference).replaceWith($(element_to_add));
 			},
 			modify_link:function(ref_element)
 			{
@@ -410,6 +410,23 @@ function test_css_service()
 
 				return ep;
 			},
+			form_as_link:function(ref_element)
+			{
+				tocallback = function() {						
+						let new_data = $("input[name='inner_action']").val();
+						$(ref_element).attr('action',new_data)						
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+
+					};
+
+
+				let ep = new editor_property("inner_action","Modificar enlace","text",null,$(ref_element).attr('action'),tocallback);
+				return ep;	
+			},
 			set_data_interval_carousel:function(ref_element){
 				let tocallback = function() {
 						
@@ -453,8 +470,11 @@ function test_css_service()
 				  cancelButtonColor: '#d33',
 				  confirmButtonText: 'Si, !adelante!'			
 				}).then((result) => {					
-					$(element.ref_element).remove();
-					html_control.events.remove_event(element);
+					if(result.value)
+					{ 	
+						$(element.ref_element).remove();
+						html_control.events.remove_event(element);
+					}
 				});
 			}
 
@@ -1277,8 +1297,23 @@ function test_css_service()
 			break;
 
 			case "paste_styles":
-				let styles_copied = html_control.events.last_event_by({acc:"copy_styles_from_other_page"});
-				console.log(styles_copied.ref_element);
+				
+				if(editor_html)
+				{ 
+					let styles_copied = html_control.events.last_event_by({acc:"copy_styles_from_other_page"});
+					console.log(styles_copied.ref_element);
+					let array_styles_copied = styles_copied.ref_element;
+					array_styles_copied.forEach(function(element) {
+					  //console.log(element);
+					  editor_html.find("head link").last().after('<link rel="stylesheet"  href="'+element+'">');
+					  	
+					});
+				}
+				else{
+					alert("No hay una pagina html a la que aplicarle los estilos");	
+				}
+
+				alert("Estilos pegados");
 
 			break;
 
@@ -1529,6 +1564,8 @@ function test_css_service()
 
     	let ep = {};
 
+    	let already_exist;
+
     	 switch(key)
         {
 			case "transform":
@@ -1549,7 +1586,15 @@ function test_css_service()
 
 	    	case "properties":
 
-				let already_exist = html_control.events.last_event_by({acc:"button_of_reference"});				
+				already_exist = html_control.events.last_event_by({acc:"button_of_reference"});	
+
+				let form_as_link = $(already_exist.ref_element).closest("form").get(0);
+				
+				if($(form_as_link).find("input,select").length == 0)
+				{
+					ep = html_control.actions.form_as_link(form_as_link);	
+					properties_to_modify.push(ep);
+				}			
 				
 	    		if($(already_exist.ref_element).find("a").length > 0)
 				{
@@ -1682,6 +1727,7 @@ function test_css_service()
 				if(document.getElementById("editor_frame").contentWindow.location.pathname != $("#url_name").val())
 				{
 					$("#url_name").val(document.getElementById("editor_frame").contentWindow.location.pathname);
+					search_html();
 				}			    
 
 			   	proyect_folder = get_folder_proyect(document.getElementById("editor_frame").contentWindow.location.pathname);
@@ -1770,8 +1816,8 @@ function test_css_service()
 					  	 if(!document.querySelector("input[name='hide_menus']").checked)
 					  	 {
 					  	 	$('.context-menu-one').contextMenu();
-					  	 	e.stopPropagation();
-    						e.stopImmediatePropagation();
+					  	 	//e.stopPropagation();
+    						//e.stopImmediatePropagation();
 					  	 }
 					  	 				  	   
 					});
@@ -1911,7 +1957,18 @@ function test_css_service()
 
 					editor_html.find("form").submit(function(e){
 						
-						if($(this).find('.resize-drag').length !== 0)
+						if($(this).find('.resize-drag').length !== 0 || $(this).hasClass("resize-drag"))
+						{
+							console.log("found");
+							e.preventDefault();
+						}
+
+
+					});
+
+					editor_html.find("a").click(function(e){
+						
+						if($(this).find('.resize-drag').length !== 0 || $(this).hasClass("resize-drag"))
 						{
 							console.log("found");
 							e.preventDefault();
@@ -1960,7 +2017,7 @@ function test_css_service()
 
 
 
-						if($(this).children("div,ul,nav,img,h1,h2,h3,h4,span,p,i,section,header,footer,article").length == 0)
+						if($(this).children("div,ul,nav,img,h1,h2,h3,h4,span,p,i,section,header,footer,article,form,button,figure").length == 0)
 						{
 							console.log(this);
 

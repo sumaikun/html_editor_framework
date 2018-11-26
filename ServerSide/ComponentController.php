@@ -185,6 +185,7 @@ class ComponentController
 
 		if($request->style_to_copy->style == "content-block")
 		{
+						
 			if($request->style_to_copy->reference == "virb")
 			{
 				$path_to_copy = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/css/template_virb.css';

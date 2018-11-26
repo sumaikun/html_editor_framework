@@ -248,12 +248,20 @@
 
 			editor_html.find(".wow").removeAttr("style");
 
-			editor_html.find(".wow").removeClass("animated");			
+			editor_html.find(".wow").removeClass("animated");
 
+			editor_html.find(".program.calendar").html('<div id="calendar"></div>');
+
+			if(editor_html.find(".carousel-inner").length > 0)
+			{
+				editor_html.find(".carousel-inner *").removeAttr("style");	
+			} 			
+
+			editor_html.find("h1,h2,h3,h4,span,p,div").removeAttr("contenteditable");
 
 			if(mode == "normal")
 			{
-				editor_html.find("h1,h2,h3,h4,span,p,div").removeAttr("contenteditable");
+				
 
 				editor_html.find(".interactjs").remove();
 
@@ -269,14 +277,9 @@
 
 			    editor_html.find("html").removeAttr("style");
 
-			    //console.log(editor_html.find(".content-block.program.calendar"));
+			    //console.log(editor_html.find(".content-block.program.calendar"));			    
 
-			    editor_html.find(".program.calendar").html('<div id="calendar"></div>'); 
-
-				if(editor_html.find(".carousel-inner").length > 0)
-				{
-					editor_html.find(".carousel-inner *").removeAttr("style");	
-				}					    
+									    
 					
 			}
 			if(mode=="interact")
