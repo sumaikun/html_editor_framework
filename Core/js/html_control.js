@@ -187,6 +187,45 @@ function test_css_service()
 			}
 		},
 		actions:{
+			insert_default_content:function()
+			{
+
+				swal({			
+				  title: decode_utf8('¿Esta seguro/a?'),
+				  text: decode_utf8('Esto va a insertar este contenido en el lugar seleccionado'),
+				  type: 'warning',
+				  showCancelButton: true,
+				  confirmButtonColor: '#3085d6',
+				  cancelButtonColor: '#d33',
+				  confirmButtonText: 'Si, !adelante!'			
+				}).then((result) => {					
+					if(result.value)
+					{
+
+						if(editor_html.find("#default_blog_posts").length == 0)
+						{
+							let request = getScope("#StyleCtrl").add_custom_file_from_core(proyect_folder,"css/post_styles.css");
+							request.then(function(response){
+								editor_html.find("head link").last().after('<link rel="stylesheet" id="default_blog_posts" class="custom_styles" href="css/post_styles.css">');	
+							});
+						}
+
+						let event_to_add_content = html_control.events.last_event_by({acc:"reference_to_add_default_content"});
+	            
+						//console.log(event_to_add_content.ref_element);
+
+						//console.log($("#default_content_body .tab-pane.active").html());
+					
+						$(event_to_add_content.ref_element).html($("#default_content_body .tab-pane.active").html());
+
+						html_control.events.remove_event(event_to_add_content);
+
+						$("#modaldefaultContent").modal("hide");
+					}
+				});
+
+				
+			},
 			insert_image:function(element){
 				if(editor_html!=null)
 				{
@@ -361,7 +400,7 @@ function test_css_service()
 				
 				//console.log(ref_element);
 
-				let tocallback = function() {											
+					let tocallback = function() {											
 
 						$(ref_element).css("font-size",$("input[name='inner_font_size']").val());												
 					
@@ -373,6 +412,63 @@ function test_css_service()
 					};
 					
 					let ep = new editor_property("inner_font_size",decode_utf8("Selecciona el tamaño del texto"),"text",null,$(ref_element).css("font-size"),tocallback);
+
+					return ep;
+			},
+			change_font_weight:function(ref_element)
+			{
+					let tocallback = function() {											
+
+						$(ref_element).css("font-weight",$("select[name='inner_font_weight']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+					
+					let dataset = [{option:"Normal",value:"normal"},{option:"Bold",value:"bold"},{option:"Bolder",value:"bolder"},{option:"Lighter",value:"lighter"}];
+					
+					let ep = new editor_property("inner_font_weight",decode_utf8("Selecciona la anchura de la letra"),"select",dataset,null,tocallback);
+
+					return ep;
+			},
+			change_font_style:function(ref_element)
+			{
+					let tocallback = function() {											
+
+						$(ref_element).css("font-style",$("select[name='inner_font_style']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+					
+					let dataset = [{option:"Normal",value:"normal"},{option:"Italic",value:"italic"},{option:"Oblique",value:"oblique"}];
+					
+					let ep = new editor_property("inner_font_style",decode_utf8("Selecciona El estilo de letra"),"select",dataset,null,tocallback);
+
+					return ep;
+			},
+			change_font_family:function(ref_element)
+			{
+					let tocallback = function() {											
+
+						$(ref_element).css("font-family",$("select[name='inner_font_family']").val());												
+					
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se ha modificado el parametro',
+						  'success'
+						);
+					};
+					
+					let dataset = [{option:"Cursive",value:"cursive"},{option:"Fantasy",value:"fantasy"},{option:"Monospace",value:"monospace"},{option:"None",value:"none"},{option:"Serif",value:"serif"},{option:"Sans Serif",value:"sans-serif"}];
+					
+					let ep = new editor_property("inner_font_style",decode_utf8("Selecciona El tipo de fuente"),"select",dataset,null,tocallback);
 
 					return ep;
 			},
@@ -459,7 +555,7 @@ function test_css_service()
 				$(element.ref_element).parent().addClass("resize-drag");
 				//console.log(element);
 			},
-			delete_html_element:function(element)
+			delete_html_element:function(element,callback=false)
 			{
 				swal({			
 				  title: decode_utf8('¿Esta seguro/a?'),
@@ -474,6 +570,10 @@ function test_css_service()
 					{ 	
 						$(element.ref_element).remove();
 						html_control.events.remove_event(element);
+						if(callback)
+						{
+							callback();
+						}
 					}
 				});
 			}
@@ -619,8 +719,8 @@ function test_css_service()
 						editor_html.find("head link").last().after('<link type="text/css" rel="stylesheet" class="custom_styles" href="css/template_virb.min.css">');							
 					}	
 
-					editor_html.find("body").after('<script  type="text/javascript" class="custom_scripts" href="js/template_virbmain.min.js">');
-					editor_html.find("body").after('<script  type="text/javascript" class="custom_scripts" href="js/template_virbscripts.min.js">');
+					editor_html.find("body").after('<script  type="text/javascript" class="custom_scripts" src="js/template_virbmain.min.js">');
+					editor_html.find("body").after('<script  type="text/javascript" class="custom_scripts" src="js/template_virbscripts.min.js">');
 				}
 				else
 				{ 	
@@ -863,18 +963,76 @@ function test_css_service()
 	{
 		let carousel = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
 
-		console.log(carousel);
+		let default_content = html_control.events.last_event_by({acc:"reference_to_add_default_content"});
+
+		let already_exist;
+
+		let register_event;
+
+		let helper_reference;
+
+		let reference_element;
+
+		options = {};
+
+		let tab_selected = html_control.events.last_event_by({acc:"last_li_selected"});
+
+		let show_default_content = false;
+
+		if(default_content)
+		{
+			show_default_content = true;			
+		}	
+
+		if(tab_selected)
+		{
+			if($(tab_selected.ref_element).children("a").attr("data-toggle") == "tab")
+			{
+				show_default_content = true;
+				
+			 	helper_reference = $(tab_selected.ref_element).children("a").attr("href");
+
+			 	reference_element = editor_html.find(helper_reference).get(0);
+
+			 	console.log(reference_element);
+
+			 	already_exist = html_control.events.last_event_by({acc:"reference_to_add_default_content"});
+
+				register_event = new editor_event(reference_element,"reference_to_add_default_content","program");
+				 
+				if(already_exist)
+				{
+				  	 	html_control.events.replace_event(already_exist,register_event);
+				} 		
+				else
+				{
+			  	 	html_control.events.add_event(register_event);	
+				}	
+
+			}	
+		}
+
+
+		if(show_default_content)
+		{ 	
+			options["default_content"] = {name: decode_utf8("Insertar contenido predefinido"), icon: "fa-star"};
+		}			
+		
 
 		if(carousel)
 		{
-			options = {
-				"carousel_properties": {name: decode_utf8("Modificar propiedades de slider"), icon: "fa-edit"}
-			}
+			options["carousel_properties"] = {name: decode_utf8("Modificar propiedades de slider"), icon: "fa-edit"};
+			
 		}
-		else
+		
+		let calendar = html_control.events.last_event_by({acc:"calendar_selected"});
+
+		if(calendar)
 		{
-			options = {};
+			options["calendar_properties"] = {name: decode_utf8("Modificar propiedades del calendario"), icon: "fa-edit"};
+			
 		}
+
 
 		context_menu_highlight(".context-menu-five");
 
@@ -1051,6 +1209,16 @@ function test_css_service()
 
 				ep = html_control.actions.change_font_size(already_exist.ref_element);
 				properties_to_modify.push(ep);
+
+				ep = html_control.actions.change_font_weight(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				ep = html_control.actions.change_font_style(already_exist.ref_element);
+				properties_to_modify.push(ep);
+
+				ep = html_control.actions.change_font_family(already_exist.ref_element);
+				properties_to_modify.push(ep);
+				
 
 				generate_html_for_properties_process(properties_to_modify);								
 
@@ -1330,18 +1498,42 @@ function test_css_service()
         {
         	case "carousel_properties": 
 
-        	let carousel = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
-			
-			console.log(carousel);
-
-			ep = html_control.actions.set_data_interval_carousel(carousel.ref_element);
-			properties_to_modify.push(ep);
+	        	let carousel = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
 				
-			generate_html_for_properties_process(properties_to_modify);								
+				console.log(carousel);
 
-			$("#modalProperties").modal("show");
+				ep = html_control.actions.set_data_interval_carousel(carousel.ref_element);
+				properties_to_modify.push(ep);
+					
+				generate_html_for_properties_process(properties_to_modify);								
+
+				$("#modalProperties").modal("show");
 
         	break;
+
+        	case "default_content":
+
+        		$("#modaldefaultContent").modal("show");
+
+        	break;
+
+        	case "calendar_properties":
+
+			  	let calendar = html_control.events.last_event_by({acc:"calendar_selected"});		
+
+			  	console.log(calendar.ref_element);
+				
+				$("#modalCalendarProperties").modal("show");
+
+				document.querySelector("input[name='json_files_for_events']").value=$(calendar.ref_element).attr("path");
+
+				if(getScope("#modalCalendarProperties").show_button_to_save == false)
+				{ 	
+					getScope("#modalCalendarProperties").search_file();
+				}
+
+        	break;
+        	
         	default:
 			break;
         }
@@ -1361,6 +1553,8 @@ function test_css_service()
     	let check;
 
     	let copy;
+
+    	let callback = false;
 
     	 switch(key)
         {
@@ -1480,15 +1674,46 @@ function test_css_service()
 					$(copy).children("a")[0].href="#";
 					console.log($(copy).children("a")[0]);
 				}
+
+				$(copy).removeClass("active");
 				
 				if($(copy).children("ul").length > 0)
 				{
 					$(copy).children("ul").remove();
 				}
+
+				if($(already_exist.ref_element).parent("ul").get(0).className.includes("nav-tabs"))
+				{
+					// caso para tabs
+
+					//console.log("Is time to tabs process");				
+
+					let last_tab_reference = $(already_exist.ref_element).parent("ul").children("li").last().find("a").attr("href");
+
+					//console.log(last_tab_reference);
+
+					//console.log(editor_html.find(last_tab_reference).get(0));
+					
+					let tab_copy = editor_html.find(last_tab_reference).get(0).cloneNode(true);
+						
+					let randid = "autogenerate_tab"+Math.floor((Math.random() * 100) + 10);
+
+					$(tab_copy).attr("id",randid);
+
+					$(tab_copy).html("<div>Placeholder Content</div>");
+
+					$(copy).children("a").attr("href","#"+randid);
+
+					//console.log(tab_copy);
+
+					//console.log(copy);
+
+					//return;
+
+					editor_html.find(last_tab_reference).after(tab_copy);
+				}
 				
 				$(already_exist.ref_element).after(copy);
-
-				//falta caso para tabs
 
 
 			break;
@@ -1533,9 +1758,27 @@ function test_css_service()
 				
 				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
 				
+
+
 				if($(already_exist.ref_element).parent("ul").children("li").length > 1)
 				{
-					html_control.actions.delete_html_element(already_exist);
+					if($(already_exist.ref_element).parent("ul").get(0).className.includes("nav-tabs"))
+					{
+						let id_tab_ref = $(already_exist.ref_element).children("a").attr("href");
+						
+						//console.log(editor_html.find(id_tab_ref).get(0));
+						
+						callback = function()
+						{
+							console.log("Deleting tab content");
+							editor_html.find(id_tab_ref).remove(); 
+						}
+							
+						
+					}
+
+
+					html_control.actions.delete_html_element(already_exist,callback);
 				}
 				else
 				{
@@ -1770,17 +2013,88 @@ function test_css_service()
 						      	console.log(count);
 						      	count++;*/
 						     }
-					});				
+					});	
+
+
 					
+					editor_html.find(".program.calendar").contextmenu(function(e) {					
+
+						//Programa de calendario
+
+						//console.log(this);
+
+						//e.preventDefault();
+
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+
+					  	console.log("Selecciono calendario");					  	
+
+					  	let already_exist = html_control.events.last_event_by({acc:"calendar_selected"});
+
+						//let register_event = new editor_event($(this).children("div").first().get(0),"calendar_selected","program");
+
+						let register_event = new editor_event(this,"calendar_selected","program");
+						 
+						if(already_exist)
+						{
+	 				  	 	html_control.events.replace_event(already_exist,register_event);	 				  	 	
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}						 					  	 				  	 
+					  	 
+					  	if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-five').contextMenu();
+					  	}			
+
+
+					  	e.stopPropagation();
+    					e.stopImmediatePropagation();						
+					});
+
+					editor_html.find(".to_insert_default_content").contextmenu(function(e) {	
+						
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+
+					  	already_exist = html_control.events.last_event_by({acc:"reference_to_add_default_content"});
+
+						register_event = new editor_event(this,"reference_to_add_default_content","program");
+						 
+						if(already_exist)
+						{
+						  	 	html_control.events.replace_event(already_exist,register_event);
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}
+						
+
+						if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-five').contextMenu();
+					  	}  	
 					
-					
+					});					
 
 					editor_html.find(".content-block,.fdb-block").contextmenu( makeDoubleRightClickHandler( function(e) {
 					  	
 					  	console.log("here");
 
-					  	 e.preventDefault();						 
-					  	 
+					  	if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+
+
 						 let already_exist = html_control.events.last_event_by({acc:"panel_of_reference"});
 
 						 let register_event = new editor_event(this,"panel_of_reference","block");
@@ -1805,6 +2119,11 @@ function test_css_service()
 				
 					editor_html.find("img").contextmenu(function(e) {
 					 	 //e.preventDefault();
+
+					 	 if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
 					  	 
 					  	 let event = new editor_event(this,"image_clicked","image",1);
 						  	 
@@ -1816,8 +2135,8 @@ function test_css_service()
 					  	 if(!document.querySelector("input[name='hide_menus']").checked)
 					  	 {
 					  	 	$('.context-menu-one').contextMenu();
-					  	 	//e.stopPropagation();
-    						//e.stopImmediatePropagation();
+					  	 	e.stopPropagation();
+    						e.stopImmediatePropagation();
 					  	 }
 					  	 				  	   
 					});
@@ -1827,6 +2146,11 @@ function test_css_service()
 					editor_html.find("ul").contextmenu(function(e) {
 					  	
 					  	//console.log($(this));
+
+					  	if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
 
 					  	let already_exist = html_control.events.last_event_by({acc:"list_of_reference"});
 
@@ -1844,8 +2168,8 @@ function test_css_service()
 						if(!document.querySelector("input[name='hide_menus']").checked)
 					  	{
 					  	 	$('.context-menu-six').contextMenu();
-					  	 	e.stopPropagation();
-    						e.stopImmediatePropagation();
+					  	 	//e.stopPropagation();
+    						//e.stopImmediatePropagation();
 					  	 	
 					  	}
 											
@@ -1858,6 +2182,10 @@ function test_css_service()
 						//console.log(this);						
 						//$(this).attr('contenteditable','true');						
 
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
 
 					  	let already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
 
@@ -1877,6 +2205,11 @@ function test_css_service()
 
 					editor_html.find("button").contextmenu(function(e) {				  	
 					  	
+
+					  	if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
 
 					  	let already_exist = html_control.events.last_event_by({acc:"button_of_reference"});
 
@@ -1912,7 +2245,12 @@ function test_css_service()
 
 						//console.log(this);
 
-						//e.preventDefault();						
+						//e.preventDefault();
+
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}						
 
 						let already_exist = html_control.events.last_event_by({acc:"selected_text"});
 
@@ -1937,8 +2275,8 @@ function test_css_service()
 					  	{
 					  	 	$('.context-menu-two').contextMenu();
 
-					  	 	e.stopPropagation();
-    						e.stopImmediatePropagation();
+					  	 	//e.stopPropagation();
+    						//e.stopImmediatePropagation();
 					  	}
 
 											
@@ -1981,10 +2319,27 @@ function test_css_service()
 						e.preventDefault();
 					});
 
-					editor_html.find("div").contextmenu(function(event) {
+
+					editor_html.find(".tab-pane").contextmenu(function(e){
+						
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+
+
+					  	console.log("Tab pane right clicked");
+
+					});
+
+					editor_html.find("div").contextmenu(function(e) {
 						
 						//console.log($(this).children());
 
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
 						
 						if($(this).css('background-image') && $(this).css('background-image')!= "none")
 						{
@@ -2009,8 +2364,8 @@ function test_css_service()
 							if(!document.querySelector("input[name='hide_menus']").checked)
 						  	{
 						  	 	$('.context-menu-one').contextMenu();
-						  	 	event.stopPropagation();
-    							event.stopImmediatePropagation();
+						  	 	e.stopPropagation();
+    							e.stopImmediatePropagation();
 						  	}
 						}
 
@@ -2019,6 +2374,11 @@ function test_css_service()
 
 						if($(this).children("div,ul,nav,img,h1,h2,h3,h4,span,p,i,section,header,footer,article,form,button,figure").length == 0)
 						{
+							if(document.querySelector("input[name='hide_inspect']").checked)
+						  	{
+						  		 e.preventDefault();						 
+						  	}
+
 							console.log(this);
 
 							let already_exist = html_control.events.last_event_by({acc:"selected_text"});
@@ -2043,8 +2403,8 @@ function test_css_service()
 							if(!document.querySelector("input[name='hide_menus']").checked)
 						  	{
 						  	 	$('.context-menu-two').contextMenu();
-						  	 	event.stopPropagation();
-    							event.stopImmediatePropagation();
+						  	 	e.stopPropagation();
+    							e.stopImmediatePropagation();
 						  	}
 
 						  		
@@ -2079,6 +2439,11 @@ function test_css_service()
 					editor_html.find(".carousel.slide").contextmenu(function(e) {
 
 						 //console.log(this);
+
+						 if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
 
 						 let already_exist = html_control.events.last_event_by({acc:"carousel_slider_of_reference"});
  
@@ -2128,7 +2493,10 @@ function test_css_service()
 					//console.log("playground changed");
 				
 				asistant_html.find(".fdb-block").contextmenu(function(e) {
-				  	 e.preventDefault();				  	
+				  	 if(document.querySelector("input[name='hide_inspect']").checked)
+				  	{
+				  		 e.preventDefault();						 
+				  	}				  	
 				  	 //console.log(getComputedStyle(this)); 
 			  	 	 //console.log("right clicked fdbblock");
 
@@ -2158,7 +2526,12 @@ function test_css_service()
 				inframe_inception = $(this).contents();
 				
 				inframe_inception.find(".content-block").contextmenu(function(e) {
-				  	 e.preventDefault();
+				  	 //e.preventDefault();
+				  	 if(document.querySelector("input[name='hide_inspect']").checked)
+				  	{
+				  		 e.preventDefault();						 
+				  	}
+
 				  	 console.log("right clicked inception");
 				  	 
 				  	 let already_exist = html_control.events.last_event_by({acc:"panel_that_modify"});

@@ -1,0 +1,48 @@
+.heart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+.ef-heart {
+  width: 30vw;
+  cursor: pointer;
+}
+.ef-heart__spiral {
+  stroke: #c3c3c3;
+  stroke-width: 4.4;
+  stroke-linecap: round;
+  fill: none;
+}
+.ef-heart__spiral--fill {
+  stroke: #c42d33;
+  stroke-dasharray: 1150;
+  stroke-dashoffset: -1150;
+}
+.ef-heart__spiral.animate {
+  animation: spiral .3s ease-in-out forwards;
+}
+.ef-heart__sparkles__particle {
+  stroke: #c42d33;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 7;
+  stroke-dashoffset: 7;
+}
+.ef-heart__sparkles.animate > .ef-heart__sparkles__particle {
+  animation: sparkle .2s ease-in-out forwards;
+  animation-delay: .2s;
+}
+
+@keyframes spiral {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes sparkle {
+  to {
+    stroke-dashoffset: -7;
+  }
+}

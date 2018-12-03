@@ -10,6 +10,11 @@ function RestfulService($http) {
 	rest.launch = function(data)
 	{
 		return $http.post("ServerSide/ComponentController.php",data);	
+	}
+
+	rest.launch_to_program = function(data)
+	{
+		return $http.post("ServerSide/ProgramController.php",data);	
 	}	
 
 	rest.by_form = function(data)

@@ -1,0 +1,37 @@
+<table class="table table-striped table-hover">
+	<thead>
+		<tr>
+			<th>Nombre del evento</th>
+			<th>Inicio</th>
+			<th>Final</th>
+			<th>Contenido</th>
+			<th>Opciones</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="event in calendar_events">
+			<td ng-model="event.title"  contenteditable="true">{{event.title}}</td>
+			<td>
+				<!--<input  ng-blur="modify_date(event,'start')"  name="{{'start_event_'+event.id}}" type="date" >-->
+				<input  ng-model="event.start"   type="date" format-date>
+			</td>
+			<td>
+				<!--<input  ng-blur="modify_date(event,'end')" name="{{'end_event_'+event.id}}" type="date">-->
+				<input ng-model="event.end"     type="date" format-date>
+			</td>
+			<td>
+				<button  ng-if="event.content == null" ng-click="create_event_content(event)" title="Crear contenido"><i class="fas fa-plus-circle"></i></button>
+				<button  ng-if="event.content != null" ng-click="modify_event_content(event)" title="Modificar contenido"><i class="fa fa-edit"></i></button>
+			</td>
+			<td><button title="Eliminar" ng-click="delete_calendar_event(event)"><i class="fas fa-trash-alt"></i></button></td>
+		</tr>
+		<tr ng-if="show_button_to_save">
+			<td ng-model="new_event.title"  contenteditable="true"></td>
+			<td><input  ng-model="new_event.start"   type="date" format-date></td>
+			<td><input ng-model="new_event.end"     type="date" format-date></td>
+			<td></td>
+			<td><button title="Agregar" ng-click="add_event()"><i class="fas fa-plus"></i></button></td>
+		</tr>
+	</tbody>
+</table>
+<button class="btn btn-success" ng-if="show_button_to_save" ng-click="save_json_to_server()">Guardar cambios en el calendario</button>

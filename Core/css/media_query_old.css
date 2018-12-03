@@ -30,7 +30,7 @@
   ##Screen = B/w 768px to 1024px
 */
 
-@media (min-width: 764px) and (max-width: 995px) {
+@media (min-width: 768px) and (max-width: 1024px) {
   
   
   
@@ -52,7 +52,7 @@
   ##Screen = B/w 481px to 767px
 */
 
-@media (min-width: 477px) and (max-width: 763px) {
+@media (min-width: 481px) and (max-width: 767px) {
   
   
   

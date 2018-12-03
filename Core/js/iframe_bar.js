@@ -3,19 +3,22 @@
 		{
 			swal({			
 			  title: decode_utf8('¿Esta seguro de crear el archivo?'),
-			  text: 'Tenga cuenta la ruta donde lo esta creando así como la extensión del archivo a crear',
+			  text: decode_utf8('Tenga cuenta la ruta donde lo esta creando así como la extensión del archivo a crear'),
 			  type: 'warning',
 			  showCancelButton: true,
 			  confirmButtonColor: '#3085d6',
 			  cancelButtonColor: '#d33',
 			  confirmButtonText: 'Si, !adelante!'			
 			}).then((result) => {
+				if(result.value)
+				{ 	
 					let url = $("#url_name").val();
 
 					return getScope("#modalYT").create_document(url).then(function(response){
 						console.log("Creado");
 						let iframe = document.getElementById("editor_frame"); iframe.src = url;
 					});
+				}	
 			});		
 		}
 
@@ -243,6 +246,8 @@
 
 		function save_process(mode)
 		{
+
+			editor_html.find("svg").remove();
 
 			//console.log(editor_html.find(".wow"));
 

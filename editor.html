@@ -45,6 +45,9 @@
 	    
 
 	    <!--  Angular -->
+		
+	    <script src="Core/js/date.js"></script>
+
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js" ></script>				
 		
 		<script src="https://angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.11.0.js"></script>
@@ -58,6 +61,8 @@
 
 	    <!-- Custom Styles -->
 		<link rel="stylesheet" href="Core/css/iframe_sizes.css">
+
+		<link rel="stylesheet" href="Core/css/post_styles.css">
 
 
 		<script src="Core/js/interact.js"></script>
@@ -96,7 +101,8 @@
 				<span class="context-menu-five btn btn-primary">Programas</span>
 				<span class="context-menu-six btn btn-primary">Listas</span>
 				<span class="context-menu-seven btn btn-primary">Botones</span>
-				<span class="badge badge-danger">Prevent?</span>&nbsp<input type="checkbox"  name="hide_menus">				
+				<span class="badge badge-danger">Prevent menus?</span>&nbsp<input type="checkbox"  name="hide_menus">
+				<span class="badge badge-success">Prevent inspect?</span>&nbsp<input type="checkbox"  name="hide_inspect">				
 				<!--<button onclick="openpopup('components.html')">Test components</button>-->			
 				<select onchange="deploy_html()"  id="content_editor" style='width:"150px;"'>
 					<option>Selecciona</option>
@@ -136,6 +142,12 @@
 				-->
 
 			</div>
+
+			<!--
+			<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCalendarProperties">
+			  Launch demo modal
+			</button>
+			-->
 
 		</div>
 		
@@ -232,6 +244,76 @@
 
 
 
+		<div class="modal fade" id="modaldefaultContent" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="ImageController">
+			<div class="modal-dialog modal-lg" role="document" >
+
+			    <!--Content-->
+			    <div class="modal-content resize-drag modal-resize">
+			    	<div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">Contenidos predefinidos</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+
+				        <!--Body-->
+			        <div class="modal-body" id="default_content_body" ng-include="'Angular/Views/Contents/Default_content.html'">
+	        				
+			        </div>	
+
+			        <!--Footer-->
+			        <div class="modal-footer justify-content-center">
+			            <div class="form-group">
+			            	<button onclick="html_control.actions.insert_default_content()" class="btn btn-success form-control">Insertar este contenido</button>			            	
+			            </div>
+			        </div>
+
+			    </div>
+			    <!--/.Content-->
+
+			</div>
+		</div>
+
+
+		<div class="modal fade" id="modalCalendarProperties" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" ng-controller="CalendarController">
+			<div class="modal-dialog modal-lg" role="document" >
+
+			    <!--Content-->
+			    <div class="modal-content resize-drag modal-resize">
+			    	<div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLabel">{{modal.title}}</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+
+				        <!--Body-->
+			        <div class="modal-body" id="calendar_table_crud">
+	        			<div class="form-group" >
+	        				<label>Selecciona archivo de datos json con los eventos</label>
+	        				<input type="text" name="json_files_for_events" style="width:30%">
+	        				<button ng-click="search_file()" >Buscar</button>
+	        			</div>
+	        		
+	        			<div class="table_crud" ng-include="'Angular/Views/Contents/Event_Crud.html'">
+	        				 
+	        			</div>	
+			        </div>	
+
+			        <!--Footer-->
+			        <div class="modal-footer justify-content-center">
+			            
+			        </div>
+
+			    </div>
+			    <!--/.Content-->
+
+			</div>
+		</div>
+
+
+
+
 	</body>
 
 	
@@ -245,17 +327,20 @@
 
 	<script>
 		
-		$("#property_body").hover(function(e){
+		$("#property_body , #calendar_table_crud").hover(function(e){
 
 		    $(".modal-resize").removeClass("resize-drag");
 
 		});
 
-		$("#property_body").mouseleave(function(e){
+		$("#property_body, #calendar_table_crud").mouseleave(function(e){
 
 			$(".modal-resize").addClass("resize-drag");	
 
 		});
+
+
+
 
 	</script>
 

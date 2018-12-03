@@ -1,0 +1,976 @@
+/*
+ * Base
+ */
+
+/* ----- Fonts ----- */
+@import url(https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,300,300italic,400italic,700,700italic,900,900italic);
+
+/* ----- Other ----- */
+*{
+	padding: 0;
+	margin: 0;
+}
+
+body{
+	color: #ffffff;
+	font-family: 'Source Sans Pro', sans-serif;
+}
+
+:focus{
+	outline: none !important;
+}
+
+/*
+ * Compontents
+ */
+
+/* ----- Reverse scroll ----- */
+.reverse{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	display: block;
+}
+
+/* ----- Rocket ----- */
+.rocket{
+	position: fixed;
+	bottom: 30px;
+	left: 50%;
+	margin-left: -100px;
+	z-index: 1;
+	opacity: 1;
+	visibility: visible;
+	-webkit-transition: 500ms opacity, 500ms visibility;
+	transition: 500ms opacity, 500ms visibility;
+	height: 150px;
+}
+
+.rocket--hidden .rocket{
+	opacity: 0;
+	visibility: hidden;
+}
+
+/* ----- Layer title ----- */
+.layer-title{
+	position: absolute;
+	bottom: 30px;
+	text-align: center;
+	padding: 0 60px 0 15px;
+	display: none;
+}
+
+.layer-title h2{
+	text-transform: uppercase;
+	font-size: 40px;
+}
+
+.layer-title p{
+	font-size: 15px;
+	font-weight: 300;
+	line-height: 22px;
+}
+
+.layer-title--stratosphere{
+	position: absolute;
+	top: -260px;
+}
+
+.layer-title--mesosphere{
+	top: 200px;
+}
+
+.layer-title--thermosphere{
+	top: 1500px;
+}
+
+.layer-title--exosphere{
+	top: 0;
+}
+
+/* ----- Layers ----- */
+.layers{
+	overflow: hidden;
+	background: rgb(2,4,27);
+	background: -moz-linear-gradient(top,  rgba(2,4,27,1) 15%, rgba(175,214,224,1) 75%);
+	background: -webkit-linear-gradient(top,  rgba(2,4,27,1) 15%,rgba(175,214,224,1) 75%);
+	background: linear-gradient(to bottom,  rgba(2,4,27,1) 15%,rgba(175,214,224,1) 75%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#02041b', endColorstr='#afd6e0',GradientType=0 );
+}
+
+/* -- Troposphere -- */
+.layer--troposphere,
+.layer--mesosphere{
+	position: relative;
+}
+
+.layer--mesosphere{
+	height: 400px;
+}
+
+.layer--troposphere{
+	height: 260px;
+}
+
+.earth__ground{
+	width: 100%;
+	display: block;
+}
+
+.cloud{
+	position: absolute;
+	left: 0;
+	z-index: 999;
+	height: 35px;
+}
+
+.cloud--1{
+	top: 0;
+}
+
+.cloud--2{
+	top: 160px;
+}
+
+.cloud--3{
+	top: 120px;
+	display: none;
+}
+
+.cloud--4{
+	top: 120px;
+	display: none;
+}
+
+.cloud--5{
+	top: 50px;
+}
+
+.cloud--6{
+	top: 120px;
+}
+
+.cloud--7{
+	top: 380px;
+	display: none;
+}
+
+/* ----- Jet stream ----- */
+.layer--jetstream{
+	position: relative;
+	height: 250px;
+}
+
+.airplane{
+	position: absolute;
+	left: 0;
+	width: 100px;
+}
+
+.airplane--1{
+	top: 100px;
+}
+
+.airplane--2{
+	top: 300px;
+}
+
+.airplane--3{
+	top: 0;
+}
+
+/* ----- Stratosphere ----- */
+.layer--stratosphere{
+	position: relative;
+	height: 400px;
+}
+
+/* ----- Thermoosphere ----- */
+.layer--thermosphere{
+	position: relative;
+	height: 700px;
+}
+
+/* ----- Exosphere ----- */
+.layer--exosphere{
+	position: relative;
+	height: 350px;
+}
+
+/* ----- Meteoroids ----- */
+.meteoroid{
+	position: absolute;
+	left: 0;
+	top: 1000px;
+	-moz-transform: rotate(-45deg);
+	-webkit-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+/* ----- Ballon ----- */
+.ballon{
+	position: absolute;
+	top: -50px;
+	left: 40px;
+	width: 100px;
+}
+
+/* ----- ISS ----- */
+.iss{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 200px;
+}
+
+/* ----- Aurora ----- */
+.aurora{
+	position: absolute;
+	z-index: 1;
+}
+
+.aurora--1{
+	left: 0;
+	top: 300px;
+}
+
+.aurora--2{
+	right: 0;
+	top: 300px;
+}
+
+.aurora--3{
+	top: 320px;
+	left: 50%;
+	margin-left: -300px;
+}
+
+/* ----- Stars ----- */
+.star{
+	position: absolute;
+}
+
+.star--1{
+	top: 10px;
+	left: 60px;
+}
+
+.star--2{
+	top: 10px;
+	right: 200px;
+}
+
+.star--3{
+	top: 200px;
+	left: 300px;
+}
+
+.star--4{
+	top: 200px;
+	left: 800px;
+}
+
+.star--5{
+	top: 200px;
+	right: 50px;
+}
+
+.star--6{
+	top: 450px;
+	left: 60px;
+}
+
+.star--7{
+	top: 450px;
+	right: 200px;
+}
+
+.star--8{
+	top: 730px;
+	left: 660px;
+}
+
+.star--9{
+	top: 450px;
+	right: 700px;
+}
+
+.star--10{
+	top: 930px;
+	left: 200px;
+}
+
+.star--11{
+	top: 1200px;
+	right: 360px;
+}
+
+.star--12{
+	top: 1400px;
+	left: 200px;
+}
+
+.star--13{
+	top: 1400px;
+	right: 40%;
+}
+
+.star--14{
+	top: 1700px;
+	right: 60%;
+}
+
+.star--15{
+	top: 850px;
+	right: 20%;
+}
+
+/* ----- Popover ----- */
+.popover{
+	position: absolute;
+	z-index: 9999;
+	left: 50%;
+	margin-left: -25px;
+}
+
+.popover h3{
+	font-size: 20px;
+	margin: 0 0 15px 0;
+}
+
+.popover p{
+	font-size: 15px;
+	line-height: 25px;
+	margin: 0 0 15px 0;
+}
+
+.popover--mountain{
+	top: 0;
+}
+
+.popover--jetstream{
+	top: 0;
+}
+
+.popover--ballon{
+	top: 0;
+}
+
+.popover--mesosphere{
+	top: 0;
+}
+
+.popover--stratosphere{
+	top: -210px;
+}
+
+.popover--aurora{
+	top: 470px;
+	z-index: 2;
+}
+
+.popover--iss{
+	top: 150px;
+}
+
+.popover--sss{
+	top: 320px;
+}
+
+.popover--moon{
+	top: 500px;
+}
+
+.popover--mesosphere-title{
+	top: 170px;
+}
+
+.popover--thermosphere{
+	top: 665px;
+}
+
+.popover--exosphere{
+	top: 65px;
+}
+
+.popover--credits{
+	top: 20px;
+	right: 20px !important;
+	left: auto;
+}
+
+.popover--credits .popover__content{
+	top: 60px;
+	z-index: 99999;
+	right: 0;
+	left: auto !important;
+	border-radius: 3px;
+}
+
+.popover--credits .popover__content:before{
+	display: none !important;
+}
+
+.popover__button{
+	width: 50px;
+	height: 50px;
+	border: 0;
+	background-color: #fff;
+	border-radius: 50%;
+	font-size: 20px;
+	cursor: pointer;
+	-webkit-box-shadow: 0 0 20px 2px rgba(0,0,0,0.2);
+	box-shadow: 0 0 20px 2px rgba(0,0,0,0.2);
+	color: #444;
+}
+
+.popover__content{
+	position: absolute;
+	top: -240px;
+	right: -95px;
+	left: auto;
+	background-color: #fff;
+	color: #000;
+	width: 200px;
+	opacity: 0;
+	border-radius: 6px;
+	padding: 15px 20px;
+	visibility: hidden;
+	max-height: 200px;
+	overflow: scroll;
+	-webkit-overflow-scrolling: touch;
+	-webkit-transition: 200ms opacity, 200ms visibility;
+	transition: 200ms opacity, 200ms visibility;
+	display: none;
+}
+
+.popover__content:before{
+	content: '';
+	border-style: solid;
+	border-width: 17.5px 20px 17.5px 0;
+	border-color: transparent #ffffff transparent transparent;
+	position: absolute;
+	left: -20px;
+	top: 30px;
+	display: none;
+}
+
+.popover--active.popover__content{
+	display: block;
+	opacity: 1;
+	visibility: visible;
+}
+
+/* ----- Height meter ----- */
+.height-meter{
+	position: fixed;
+	bottom: 0;
+	right: 30px;
+	border-right: 17px solid #ffffff;
+	height: 100%;
+	display: none;
+}
+
+.height{
+	position: absolute;
+	top: 0;
+	right: 20px;
+	font-size: 20px;
+	font-weight: bold;
+	z-index: 999;
+}
+
+.height--stratosphere{
+	top: -200px;
+}
+
+.height--ballon{
+	top: 10px;
+}
+
+.height--mesosphere{
+	top: 180px;
+}
+
+.height--thermosphere{
+	top: 680px;
+}
+
+.height--aurora{
+	top: 480px;
+}
+
+.height--iss{
+	top: 160px;
+}
+
+.height--moon{
+	top: 230px;
+}
+
+.height--exosphere{
+	top: 80px;
+}
+
+/* ----- Last layer ----- */
+.layer--last{
+	position: relative;
+	height: 700px;
+}
+
+.moon{
+	position: absolute;
+	left: 50%;
+	top: 300px;
+	margin-left: -100px;
+	width: 200px;
+}
+
+.sss{
+	position: absolute;
+	top: 20px;
+	left: 50%;
+	width: 100px;
+	margin-left: -50px;
+}
+
+/* ----- Hide classes ----- */
+.hidden-sm{
+	display: none;
+}
+
+.visible-md{
+	display: block;
+}
+
+/* ----- Media queries ----- */
+@media (min-width: 768px){
+	.rocket{
+		bottom: 140px;
+		height: 240px;
+	}
+
+	.layer--troposphere{
+		height: 1049px;
+	}
+
+	.cloud{
+		height: auto;
+	}
+
+	.popover--left .popover__content{
+		right: auto;
+		left: -70px;
+	}
+
+	.popover__content:before{
+		display: block;
+	}
+
+	.popover--left .popover__content:before{
+		border-style: solid;
+		border-width: 17.5px 0 17.5px 20px;
+		border-color: transparent transparent transparent #ffffff;
+		left: auto;
+		right: -20px;
+	}
+
+	.airplane{
+		width: auto;
+	}
+
+	.layer--jetstream{
+		height: 700px;
+	}
+
+	.airplane--1{
+		top: 50px;
+	}
+
+	.airplane--3{
+		top: 390px;
+	}
+
+	.popover--jetstream{
+		top: 200px;
+	}
+
+	.layer--stratosphere{
+		height: 1000px;
+	}
+
+	.ballon{
+		width: auto;
+		left: 300px;
+	}
+
+	.popover__button{
+		width: 100px;
+		height: 100px;
+		font-size: 50px;
+	}
+
+	.popover--left .popover__button{
+		margin-left: 0;
+	}
+
+	.layer--mesosphere{
+		height: 1000px;
+	}
+
+	.popover--mesosphere{
+		right: 350px;
+		top: -500px;
+	}
+
+	.layer--thermosphere{
+		position: relative;
+		height: 3000px;
+	}
+
+	.hidden-sm{
+		display: block;
+	}
+
+	.height--iss{
+		top: 180px;
+	}
+
+	.iss{
+		right: 300px;
+		width: auto;
+	}
+
+	.aurora--1{
+		top: 930px;
+	}
+
+	.aurora--2{
+		top: 930px;
+	}
+
+	.aurora--3{
+		top: 950px;
+	}
+
+	.popover--aurora{
+		top: 1050px;
+	}
+
+	.layer--exosphere{
+		height: 800px;
+	}
+
+	.layer--last{
+		height: 2000px;
+	}
+
+	.moon{
+		width: auto;
+		margin-left: -190px;
+	}
+
+	.sss{
+		top: 170px;
+		left: 300px;
+		width: auto;
+		margin-left: 0;
+	}
+
+	.height--moon{
+		top: 580px;
+	}
+
+	.height--aurora{
+		top: 1060px;
+	}
+
+	.height--ballon{
+		top: 130px;
+	}
+
+	.height--thermosphere{
+		top: 1550px;
+	}
+
+	.height--mesosphere{
+		top: 120px;
+	}
+
+	.popover h3{
+		font-size: 30px;
+	}
+
+	.popover p{
+		font-size: 17px;
+	}
+
+	.popover--iss{
+		right: 400px;
+	}
+
+	.popover--jetstream{
+		right: 350px;
+	}
+
+	.popover.popover--sss{
+		left: 500px;
+	}
+
+	.popover--moon{
+		top: 500px;
+		right: 400px;
+	}
+
+	.popover--ballon{
+		top: 200px;
+	}
+
+	.popover--thermosphere{
+		top: 1530px;
+	}
+
+	.cloud--3,
+	.cloud--4,
+	.cloud--7{
+		display: block;
+	}
+
+	.height{
+		font-size: 35px;
+	}
+
+	.popover{
+		margin-left: -50px;
+	}
+}
+
+@media (min-width: 992px){
+	.layer-title p{
+		font-size: 19px;
+		line-height: 27px;
+	}
+
+	.layer-title{
+		padding: 0 60px;
+		bottom: 50px;
+	}
+
+	.rocket{
+		bottom: 200px;
+	}
+
+	.layer-title{
+		display: block;
+		right: 150px;
+		left: 150px;
+		padding: 0 150px;
+	}
+
+	.visible-sm{
+		display: none;
+	}
+
+	.popover.popover--mountain{
+		top: 20px;
+		left: 500px;
+	}
+
+	.popover.popover--ballon{
+		left: 500px;
+	}
+
+	.popover.popover--aurora{
+		left: 500px;
+	}
+
+	.height-meter{
+		display: block;
+	}
+
+	.height{
+		right: 80px;
+		font-size: 45px;
+	}
+
+	.height--mesosphere{
+		top: 300px;
+	}
+
+	.popover{
+		right: 350px;
+		left: auto;
+	}
+
+	.popover__button{
+		margin-left: -415px;
+	}
+
+	.popover__content{
+		top: 0;
+		width: 300px;
+		padding: 25px 30px 20px 30px;
+		max-height: none;
+		overflow: visible;
+		display: block;
+	}
+
+	.popover--left .popover__content{
+		left: -400px;
+	}
+
+	.popover--active.popover__content{
+		opacity: 1;
+		visibility: visible;
+	}
+
+	.popover--credits{
+		right: 80px !important;
+	}
+}
+
+@media (min-width: 1200px){
+	.layer-title h2{
+		font-size: 70px;
+	}
+
+	.layer-title{
+		bottom: 75px;
+	}
+
+	.rocket{
+		bottom: 260px;
+	}
+}
+
+@media (min-width: 1450px){
+	.layer-title{
+		bottom: 95px;
+	}
+
+	.rocket{
+		height: auto;
+	}
+}
+
+/* ----- Preloader ----- */
+.preloader{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #ffffff;
+	z-index: 10000;
+	text-align: center;
+}
+
+.spinner-wrapper{
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+}
+
+.spinner, .spinner:before, .spinner:after{
+	width: 5px;
+	height: 25px;
+	background-color: #00B285;
+	border-radius: 2px;
+}
+
+.spinner{
+	display: inline-block;
+	position: relative;
+}
+
+.spinner:before, .spinner:after{
+	content: '';
+	position: absolute;
+	display: block;
+	top: 0px;
+}
+
+.spinner:before{
+	left: -13px;
+}
+
+.spinner:after{
+	left: 13px;
+}
+
+@-webkit-keyframes bounce-middle {
+  0% {
+    height: 9px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+  }
+  50% {
+    height: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  100% {
+    height: 9px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+  }
+}
+@keyframes bounce-middle {
+  0% {
+    height: 9px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+  }
+  50% {
+    height: 25px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  100% {
+    height: 9px;
+    margin-top: 13px;
+    margin-bottom: 13px;
+  }
+}
+
+.spinner-bounce-middle {
+  -webkit-animation: bounce-middle 0.8s ease 0.1s infinite;
+          animation: bounce-middle 0.8s ease 0.1s infinite;
+}
+
+.spinner-bounce-middle:before, .spinner-bounce-middle:after {
+  top: 50%;
+  -webkit-transform: translateY(-18px) translateZ(0);
+          transform: translateY(-18px) translateZ(0);
+}
+
+.spinner-bounce-middle:before {
+  -webkit-animation: bounce-middle 0.8s ease 0s infinite;
+          animation: bounce-middle 0.8s ease 0s infinite;
+}
+
+.spinner-bounce-middle:after {
+  -webkit-animation: bounce-middle 0.8s ease 0.2s infinite;
+          animation: bounce-middle 0.8s ease 0.2s infinite;
+}
+
+/* ----- Credits ----- */
+.credits__btn{
+	background-color: #fff;
+	border: 0;
+	border-radius: 3px;
+	padding: 14px 15px 15px 15px;
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: bold;
+	cursor: pointer;
+	display: block;
+	z-index: 9999;
+	top: 20px;
+	margin-left: 0;
+	height: auto;
+	width: auto;
+}

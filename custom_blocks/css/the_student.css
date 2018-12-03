@@ -1,0 +1,16 @@
+.the_student{
+    background-color: #192b40;
+}
+.student{
+    width: 400px;
+    margin: 4% auto;
+    position: relative;
+}
+.srvc_icon{
+    width: 29px;
+    position: absolute;
+}
+.openBookIcon{
+    top: 20%;
+    right: 0;
+}

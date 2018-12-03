@@ -231,7 +231,7 @@ class ComponentController
 				{
 					$path_to_copy_program = $_SERVER["DOCUMENT_ROOT"]."/".$request->style_to_copy->folder.'/js/program_'.$request->style_to_copy->reference.'.js';
 
-					if (!file_exists($path_to_copy)) {
+					if (!file_exists($path_to_copy_program)) {
 						copy($_SERVER["DOCUMENT_ROOT"].'/Framework/custom_blocks/js/program_'.$request->style_to_copy->reference.".js", $path_to_copy_program);
 						$scrip_tag = true;
 					}
@@ -267,6 +267,26 @@ class ComponentController
 			return array("status"=>1,"desc"=>"file created");
 		}	
 	}
+
+	public function add_custom_file_from_core($request)
+	{
+		$dir =  $this->request->proyect_folder;
+
+		$filepath =  $this->request->filepath;
+		
+		if(file_exists($_SERVER["DOCUMENT_ROOT"].'/'.$dir.'/'.$filepath))
+		{	
+			return array("status"=>2,"desc"=>"File already exists");
+		}
+		else
+		{
+			copy($_SERVER["DOCUMENT_ROOT"].'/Framework/Core/'.'/'.$filepath,$_SERVER["DOCUMENT_ROOT"].'/'.$dir.'/'.$filepath);			
+
+			return array("status"=>1,"desc"=>"file created");
+		}	
+	}
+
+
 
 
 	
