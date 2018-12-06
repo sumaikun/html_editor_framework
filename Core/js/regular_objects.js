@@ -220,3 +220,4 @@ function URL_add_parameter(url, param, value){
     parser.search = '?' + list.join('&');
     return parser.href;
 }
+

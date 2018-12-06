@@ -1632,6 +1632,8 @@ function test_css_service()
 
 				already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
 
+				console.log(already_exist.ref_element);
+
 				//console.log($(already_exist.ref_element).next("li").get(0));				
 	
 				if($(already_exist.ref_element).next("li").get(0) != null)
@@ -1738,7 +1740,34 @@ function test_css_service()
 						  decode_utf8('¡Opps!'),
 						  "No tengo una referencia para generar este resultado",
 						  'question'
-						);						
+						);
+
+
+						setTimeout(function(){ 
+							swal({			
+							  title: decode_utf8('¿Desea generar la lista entre listas por defecto?'),
+							  text: 'Es posible que no funcione',
+							  type: 'warning',
+							  showCancelButton: true,
+							  confirmButtonColor: '#3085d6',
+							  cancelButtonColor: '#d33',
+							  confirmButtonText: 'Si, !adelante!'			
+							}).then((result) => {
+
+								let default_list_on_list = '<li class=""><a href="#" class="dropdown-toggle " data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">'+already_exist.ref_element.innerText+'<span class="caret"></span></a>';
+                 				default_list_on_list += '<ul class="dropdown-menu">';
+                      			default_list_on_list += '<li><a href="#">Nuevo elemento</a></li>';
+                  				default_list_on_list += '</ul>';
+            					default_list_on_list += '</li>';
+
+								
+								console.log(already_exist.ref_element.innerText);
+
+								$(already_exist.ref_element).replaceWith(default_list_on_list);	
+							});
+
+						}, 3000);
+												
 					}
 				}
 				else
@@ -2141,10 +2170,69 @@ function test_css_service()
 					  	 				  	   
 					});
 
-
-
-					editor_html.find("ul").contextmenu(function(e) {
+					editor_html.find("li").contextmenu(function(e) {
 					  	
+						let already_exist;
+
+						let register_event;
+
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+						
+					  	if($(this).parent("ul").get(0))
+					  	{
+					  		already_exist = html_control.events.last_event_by({acc:"list_of_reference"});
+
+							register_event = new editor_event(this,"list_of_reference","list");
+							 
+							if(already_exist)
+							{							
+		 				  	 	html_control.events.replace_event(already_exist,register_event);
+							} 		
+							else
+							{
+						  	 	html_control.events.add_event(register_event);	
+							}				
+					  	}
+
+
+						//$(this).attr('contenteditable','true');						
+
+						if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+
+					  	already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
+
+						register_event = new editor_event(this,"last_li_selected","component_list");
+						 
+						if(already_exist)
+						{							
+	 				  	 	html_control.events.replace_event(already_exist,register_event);
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}				
+											
+						//e.stopPropagation();
+
+						if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  	 	$('.context-menu-six').contextMenu();
+					  	 	e.stopPropagation();
+    						e.stopImmediatePropagation();
+					  	 	
+					  	}
+					});
+
+					/*editor_html.find("ul").contextmenu(function(e) {
+					  	
+					  	console.log(this);
+
 					  	//console.log($(this));
 
 					  	if(document.querySelector("input[name='hide_inspect']").checked)
@@ -2175,33 +2263,9 @@ function test_css_service()
 											
 						
 
-					});
+					});*/
 
-					editor_html.find("li").contextmenu(function(e) {
-					  	
-						//console.log(this);						
-						//$(this).attr('contenteditable','true');						
-
-						if(document.querySelector("input[name='hide_inspect']").checked)
-					  	{
-					  		 e.preventDefault();						 
-					  	}
-
-					  	let already_exist = html_control.events.last_event_by({acc:"last_li_selected"});
-
-						let register_event = new editor_event(this,"last_li_selected","component_list");
-						 
-						if(already_exist)
-						{							
-	 				  	 	html_control.events.replace_event(already_exist,register_event);
-						} 		
-						else
-						{
-					  	 	html_control.events.add_event(register_event);	
-						}				
-											
-
-					});
+					
 
 					editor_html.find("button").contextmenu(function(e) {				  	
 					  	
