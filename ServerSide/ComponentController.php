@@ -53,9 +53,39 @@ else
 		        $response = $ajax->delete($request->table);
 		        break;
 			}	
-		}				
-		
+		}
+
 		echo json_encode($response);
+	
+
+		if(json_last_error())
+		{ 	
+			switch(json_last_error()) {
+		        case JSON_ERROR_NONE:
+		            //echo ' - Sin errores';
+		        break;
+		        case JSON_ERROR_DEPTH:
+		            echo ' - Excedido tamaño máximo de la pila';
+		        break;
+		        case JSON_ERROR_STATE_MISMATCH:
+		            echo ' - Desbordamiento de buffer o los modos no coinciden';
+		        break;
+		        case JSON_ERROR_CTRL_CHAR:
+		            echo ' - Encontrado carácter de control no esperado';
+		        break;
+		        case JSON_ERROR_SYNTAX:
+		            echo ' - Error de sintaxis, JSON mal formado';
+		        break;
+		        case JSON_ERROR_UTF8:
+		            echo ' - Caracteres UTF-8 malformados, posiblemente codificados de forma incorrecta';
+		        break;
+		        default:
+		            echo ' - Error desconocido';
+		        break;
+		    }
+		}    
+
+
 	}    	
 	
 
@@ -91,18 +121,23 @@ class ComponentController
 
 	        if ($entry != "." && $entry != "..") {
 	        		if(strpos($entry,'.jpg') or strpos($entry,'.png') or strpos($entry,'.bmp') or strpos($entry,'.svg'))
-        			{ 
+        			{
+        				$entry = utf8_decode($entry); 
 	        			array_push($images_saved, $dir."/".$entry);
 		        	}
 		        }
 		    }
 
 		    closedir($handle);
+
+
 		}
 		else
 		{
 			return array("status"=>2,"desc"=>"No existe la carpeta");
 		}
+
+
 
 		return array("status"=>1,"images"=>$images_saved);
 	}
