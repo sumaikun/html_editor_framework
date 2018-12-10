@@ -55,6 +55,12 @@ function test_css_service()
 
 						getScope("#StyleCtrl").modify_styles({css:new_css_test,route:remove_dns_server(styles_to_process[k].sheet.href)});
 
+
+						swal(
+						  decode_utf8('¡Bien!'),
+						  'Se han modificado los css',
+						  'success'
+						);
 				    }
 				}				
 				
