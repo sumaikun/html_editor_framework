@@ -120,7 +120,7 @@ class ComponentController
 		    while (false !== ($entry = readdir($handle))) {
 
 	        if ($entry != "." && $entry != "..") {
-	        		if(strpos($entry,'.jpg') or strpos($entry,'.png') or strpos($entry,'.bmp') or strpos($entry,'.svg'))
+	        		if(strpos($entry,'.jpg') or strpos($entry,'.JPG') or strpos($entry,'.png') or strpos($entry,'.PNG') or strpos($entry,'.bmp') or strpos($entry,'.svg'))
         			{
         				$entry = utf8_decode($entry); 
 	        			array_push($images_saved, $dir."/".$entry);
@@ -160,7 +160,7 @@ class ComponentController
 
 		if(move_uploaded_file( $_FILES['file']['tmp_name'], $target))
 		{
-			return array("status"=>1,"STATUS"=>"OK");		
+			return array("status"=>1,"STATUS"=>"OK","target"=>$target);		
 		}
 		else{return array("status"=>2,"STATUS"=>"ERROR");}
 

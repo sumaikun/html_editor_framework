@@ -6,13 +6,17 @@ if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
 }
 else{
    
-	$.post( "ServerSide/LoginController.php",{Acc:"check_session"}, function( data ) {
-       console.log(data);
-       data = JSON.parse(data);			    
-       if(data.STATUS != "OK")
+	$.post( "ServerSide/LoginController.php",{Acc:"check_session"}, function( data ) {       
+       data = JSON.parse(data);
+       console.log(data);			    
+       if(data.status != "OK")
        {
+          console.log("no session");
        	//alert("It's a local server!");	
-   			window.location.href = "login.html";	
+   			  window.location.href = "login.html";	
+       }
+       else{
+          console.log("session");
        }	
        
    });

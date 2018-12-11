@@ -2186,6 +2186,29 @@ function test_css_service()
 					  	{
 					  		 e.preventDefault();						 
 					  	}
+
+
+					  	//**//
+					  			
+					  	if($(this).css('background-image') && $(this).css('background-image')!= "none")
+						{
+							console.log("Has a background");
+
+							already_exist = html_control.events.last_event_by({acc:"background_image_selected"});
+
+							register_event = new editor_event(this,"background_image_selected","image");
+							 
+							if(already_exist)
+							{
+								
+		 				  	 	html_control.events.replace_event(already_exist,register_event);
+							} 		
+							else
+							{
+						  	 	html_control.events.add_event(register_event);	
+							}							
+						}
+
 						
 					  	if($(this).parent("ul").get(0))
 					  	{

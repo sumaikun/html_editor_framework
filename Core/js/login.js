@@ -16,7 +16,7 @@
             $.post( "ServerSide/LoginController.php",{Acc:"login",email:email}, function( data ) {
                 console.log(data);
                 data = JSON.parse(data);          
-                if(data.STATUS != "OK")
+                if(data.status == "OK")
                 {
                   window.location.href = "editor.html";
                 }                
