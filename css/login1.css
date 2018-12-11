@@ -1,0 +1,17 @@
+@import url("//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css");
+.login1 .login-block { background: linear-gradient(rgb(255, 184, 140), rgb(222, 98, 98)); float: left; width: 100%; padding: 50px 0px; }
+.login1 .banner-sec { background: url("https://static.pexels.com/photos/33972/pexels-photo.jpg") left bottom / cover no-repeat; min-height: 500px; border-radius: 0px 10px 10px 0px; padding: 0px; }
+.login1 .container { background: rgb(255, 255, 255); border-radius: 10px; box-shadow: rgba(0, 0, 0, 0.1) 15px 20px 0px; }
+.login1 .carousel-inner { border-radius: 0px 10px 10px 0px; }
+.login1 .carousel-caption { text-align: left; left: 5%; }
+.login1 .login-sec { padding: 50px 30px; position: relative; }
+.login1 .login-sec .copy-text { position: absolute; width: 80%; bottom: 20px; font-size: 13px; text-align: center; }
+.login1 .login-sec .copy-text i { color: rgb(254, 181, 138); }
+.login1 .login-sec .copy-text a { color: rgb(227, 98, 98); }
+.login1 .login-sec h2 { margin-bottom: 30px; font-weight: 800; font-size: 30px; color: rgb(222, 98, 98); }
+.login1 .login-sec h2::after { content: " "; width: 100px; height: 5px; background: rgb(254, 181, 138); display: block; margin-top: 20px; border-radius: 3px; margin-left: auto; margin-right: auto; }
+.login1 .btn-login { background: rgb(222, 98, 98); color: rgb(255, 255, 255); font-weight: 600; }
+.login1 .banner-text { width: 70%; position: absolute; bottom: 40px; padding-left: 20px; }
+.login1 .banner-text h2 { color: rgba(42, 40, 40, 0.91); font-weight: 600; }
+.login1 .banner-text h2::after { content: " "; width: 100px; height: 5px; background: rgb(255, 255, 255); display: block; margin-top: 20px; border-radius: 3px; }
+.login1 .banner-text p { color: rgb(255, 255, 255); }
