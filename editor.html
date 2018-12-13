@@ -346,6 +346,20 @@
 
 	</script>
 
+	<script>
+		
+		var observer = new MutationObserver(function(mutations) {
+		    mutations.forEach(function(mutationRecord) {
+		        $(mutationRecord.target).css("padding-right","0px");
+		        //console.log('style changed!');
+		    });    
+		});
+
+		var target = document.querySelector('body');
+		observer.observe(target, { attributes : true, attributeFilter : ['style'] });
+
+	</script>
+
 </html>
 
 

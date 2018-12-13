@@ -1739,7 +1739,7 @@ function test_css_service()
 						$(copy).children("a")[0].innerHTML = $(copy).children("a")[0].innerHTML.replace($(copy).children("a")[0].innerText.trim(),$(already_exist.ref_element).children("a")[0].innerText.trim());
 						$(copy).children("ul").children("li").not(':first').remove();
 						$(copy).children("ul").children("li")[0].innerHTML = $(copy).children("ul").children("li")[0].innerHTML.replace($(copy).children("ul").children("li")[0].innerText.trim(),"Nuevo elemento");
-						$(already_exist).replaceWith(copy);
+						$(already_exist.ref_element).replaceWith(copy);
 					}
 					else{
 						swal(
@@ -2010,6 +2010,11 @@ function test_css_service()
 
 			   	proyect_folder = get_folder_proyect(document.getElementById("editor_frame").contentWindow.location.pathname);
 
+			   	if(proyect_folder.includes(".html"))
+			   	{
+					proyect_folder = "";			   		
+			   	}
+
 			   	//let doc = document.getElementById("editor_frame").contentDocument;
 
 			   	dynamic_styles_for_editor();
@@ -2048,6 +2053,8 @@ function test_css_service()
 						      	console.log(count);
 						      	count++;*/
 						     }
+
+						     //console.log(this);
 					});	
 
 
@@ -2155,6 +2162,8 @@ function test_css_service()
 					editor_html.find("img").contextmenu(function(e) {
 					 	 //e.preventDefault();
 
+					 	console.log(this);
+					 	 
 					 	 if(document.querySelector("input[name='hide_inspect']").checked)
 					  	{
 					  		 e.preventDefault();						 
@@ -2165,7 +2174,7 @@ function test_css_service()
 
 					  	 html_control.events.add_event(event);
 
-					  	 console.log(document.querySelector("input[name='hide_menus']").checked);
+					  	 //console.log(document.querySelector("input[name='hide_menus']").checked);
 
 					  	 if(!document.querySelector("input[name='hide_menus']").checked)
 					  	 {
@@ -2429,6 +2438,8 @@ function test_css_service()
 						
 						//console.log($(this).children());
 
+						//console.log(this);
+
 						if(document.querySelector("input[name='hide_inspect']").checked)
 					  	{
 					  		 e.preventDefault();						 
@@ -2559,6 +2570,18 @@ function test_css_service()
 					});
 
 
+
+					editor_html.find("*").contextmenu(function() {
+						 console.log(this);
+
+						 if($(this).children("img").get(0))
+						 {
+						 	console.log("Tracked img");
+						 	let event = new editor_event($(this).children("img").get(0),"image_clicked","image",1);
+ 						  	html_control.events.add_event(event);
+						 }
+
+					});	
 
 
 
