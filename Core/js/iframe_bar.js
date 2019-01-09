@@ -228,8 +228,9 @@
 							}
 							else
 							{
+								modify_media_query_V2();
+								reload_jquery_transformations();
 								save_process(mode);
-
 							}
 						}
 						
