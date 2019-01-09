@@ -26,6 +26,11 @@ function context_menu_object(selector,callback,getitems){
   }
 }
 
+
+function reverseString(str) {
+    return str.split("").reverse().join("");
+}
+
 function isEquivalent(a, b) {
     // Create arrays of property names
     var aProps = Object.getOwnPropertyNames(a);
@@ -146,11 +151,18 @@ function check_if_exist_in_objects(object_search,array_objects)
 }
 
 
+
 //Otra para eliminar el dns de las url
 
 function remove_dns_server(url)
 {
     str = url.replace( window.location.origin,"");
+
+    if(str.includes("?"))
+    {
+        str = str.substr(0, str.indexOf('?')); 
+    }
+
     return str ;
 }
 
@@ -221,3 +233,11 @@ function URL_add_parameter(url, param, value){
     return parser.href;
 }
 
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}

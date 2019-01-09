@@ -1,6 +1,7 @@
 
 @media all {
-  
+
+
 }
 
 /* 
@@ -19,7 +20,7 @@
   ##Screen = B/w 1025px to 1280px
 */
 
-@media (min-width: 1025px) and (max-width: 1280px) {
+@media (min-width: 1021px) and (max-width: 1280px) {
   
   
   
@@ -30,7 +31,7 @@
   ##Screen = B/w 768px to 1024px
 */
 
-@media (min-width: 764px) and (max-width: 995px) {
+@media (min-width: 764px) and (max-width: 1020px) {
   
   
   
@@ -63,7 +64,7 @@
   ##Screen = B/w 320px to 479px
 */
 
-@media (min-width: 315px) and (max-width: 480px) {
+@media (min-width: 315px) and (max-width: 476px) {
   
   
   

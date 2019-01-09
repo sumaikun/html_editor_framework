@@ -1,0 +1,408 @@
+
+
+
+
+<link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" />
+
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+<button onclick="make_resizable()" >add_resizable</button>
+
+<iframe src="test.html" width="100%" height="100%" id="test_frame"></iframe>
+
+<script type="text/javascript">
+
+
+var observer_media = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutationRecord) {
+        console.log('style changed!');
+        console.log(mutationRecord);
+    });    
+});
+
+//observer.observe(target, { attributes : true, attributeFilter : ['style'] });
+var media_query;
+
+
+var map_of_styles = [];
+
+
+	$('#test_frame').on('load',function (){
+		console.log("Iframe loaded");
+		test_html = $(this).contents();
+		test_html.find("head").append('<link href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css"  rel="stylesheet" type="text/css" />');
+
+        /**/
+
+
+        media_query = test_html.find("#media_query").get(0);
+		
+		//console.dir(media_query);
+    	//console.log(media_query);
+    	
+
+        function dynamic_rules(){
+        	
+        	let MediaRules = media_query.sheet.cssRules;
+
+        	console.log(MediaRules);
+
+        	console.log(MediaRules[0].cssRules);
+
+
+        	MediaRules[0].insertRule("#something{display:none}",MediaRules[0].cssRules.length);
+
+        	console.log(MediaRules[0].cssRules);
+
+        }
+
+        dynamic_rules();
+
+
+        
+
+
+        function map_rules(index)
+        {
+        	let cssRules = media_query.sheet.cssRules;
+
+			//media_query[index]        	
+        }
+
+        
+
+
+	});
+
+	function make_resizable()
+	{
+
+		
+
+		test_html.find('.image').resizable({
+        	
+			create: function (event, ui) {
+				
+				$(this).css("position","relative");
+				
+				console.log(this);
+
+			},
+
+        	start: function (event, ui) {
+		         //start = ui.position.top;
+		     
+		         console.log("Start Resizing");
+		     },
+		     stop: function (event, ui) {
+		         //stop = ui.position.top;
+		         //console.log(event.target);
+		         //console.log($(event.target).attr("style"));
+		         //console.log(ui);
+		      	 
+
+		      	 console.log("Finish Resizing");
+
+
+		      	// console.log($(this).find('.image').get(0)); 
+
+
+
+
+				 let simu = $(this).find('.image').get(0);
+				
+				
+				 let relative_width =  (100/document.documentElement.clientWidth)*simu.style.width.replace("px","");
+				 let relative_height =	(100/document.documentElement.clientWidth)*simu.style.height.replace("px","")
+
+				
+				 
+
+				 simu.style.width = relative_width+"vw";
+
+				 simu.style.height = relative_height+"vw";
+
+
+				 this.style.width = relative_width+"vw";
+
+				 this.style.height = relative_height+"vw";
+
+
+
+
+				 /*dynamic_rules_at_transformation(simu);
+
+				 
+					
+				
+								
+				 //add_rule_from_transformation($(this).find('.image').get(0));
+
+				 test_html.find(simu).resizable('destroy');
+
+				 $(simu).removeAttr("style");*/
+
+				
+		     }
+        });
+
+
+        test_html.find('.wrapper').draggable({
+			 start: function (event, ui) {
+		         //start = ui.position.top;
+		     
+		         console.log("Start Movement");
+		     },
+		     stop: function (event, ui) {
+		         //stop = ui.position.top;
+		         //console.log(event);
+		         //console.log(event.target);
+		         //console.log(ui); 
+		      	 console.log("Finish Movement");
+
+				
+		      	 console.log(this.style.left);
+
+		      	 let left_relative_pos =  (100/document.documentElement.clientWidth)*this.style.left.replace("px","");
+				 let top_relative_pos =	(100/document.documentElement.clientWidth)*this.style.top.replace("px","")
+
+				
+				 console.log(left_relative_pos);
+				 console.log(top_relative_pos);
+
+
+				 this.style.left = left_relative_pos+"vw";
+
+				 this.style.top = top_relative_pos+"vw";
+
+
+		      	 /*dynamic_rules_at_transformation(this);	
+
+
+		      	 $(this).removeAttr("style");
+
+		      	 $(this).draggable('destroy');*/
+		     }
+		});
+	}
+
+
+	function dynamic_rules_at_transformation(simu)
+	{
+		let g_id = dynamic_id(simu);
+
+				 let search = map_of_styles.find(function(map_style){  return map_style.selector == g_id   });
+
+				 if(search != null )
+				 {
+				 	console.log("different");
+				 	selector_index = map_of_styles.indexOf(search);
+				 }	
+				 else
+				 {				 	
+				 	selector_index = (map_of_styles.length);
+				 	map_of_styles.push({selector:g_id,styles:[]});
+				 	
+				 }
+
+				 console.log(search);				 
+				 
+				 let copy_obj;
+				 
+				 console.log(selector_index);
+
+				 for(let k in simu.style)
+				 {
+				 	//console.log(typeof k);
+				 	if(!isNaN(k))
+				 	{
+
+						/*console.log(k);
+				 		console.log(simu.style[k]);
+				 		console.log(simu.style[simu.style[k]]);*/
+
+				 		copy_obj = {};
+
+				 		copy_obj[simu.style[k]] = simu.style[simu.style[k]];
+
+				 		map_of_styles[selector_index]["styles"].push(copy_obj);
+
+
+				 	}
+			 	}
+
+
+			 	console.log(map_of_styles);
+
+
+				let MediaRules = media_query.sheet.cssRules;
+
+				console.log(MediaRules[0].cssRules);
+
+				let found;
+
+				map_of_styles.forEach(function(map_style){
+
+					found = false;
+
+					for(let j in MediaRules[0].cssRules)
+					{ 
+
+
+						if(MediaRules[0].cssRules[j].selectorText  ==  "#"+map_style.selector )
+						{				
+							/*search = map_of_styles.find(function(map_style){  return map_style.selector == MediaRules[0].cssRules[j].selectorText.replace("#","")   });
+
+							if(search)
+							{
+								console.log("selector found:  "+search.selector);
+							}*/
+
+							console.log("found");
+
+							console.log(MediaRules[0].cssRules[j]);
+
+
+							map_style.styles.forEach(function(style){
+								
+								for(let m in style)
+								{
+									//Conocer indices y agregarlos
+									console.log(m);
+									console.log(style[m]);
+
+									MediaRules[0].cssRules[j].style[m] = style[m]; 
+
+								}
+
+							});
+
+
+							//MediaRules[0].cssRules[j]
+
+							
+							found = true;
+								
+						}
+
+						
+
+					}
+
+					if(!found)
+					{
+						cssTexttoAdd = " #"+map_style.selector+"{"+$(simu).attr("style")+"} ";						
+
+						MediaRules[0].insertRule(cssTexttoAdd,MediaRules[0].cssRules.length);
+					}
+
+
+				});
+
+	}
+
+
+
+
+	function add_rule_from_transformation(html_element)
+    {
+
+    	console.log(html_element);
+
+		let g_id = dynamic_id(html_element);
+
+		let cssTexttoAdd = " #"+g_id+"{"+$(html_element).attr("style")+"} ";
+
+		let MediaRules = media_query.sheet.cssRules;
+
+		MediaRules[0].insertRule(cssTexttoAdd,MediaRules[0].cssRules.length);
+
+		$(html_element).removeAttr("style");
+
+		console.log(MediaRules);						
+    }
+
+	function dynamic_id(element_to_identify)
+    {
+    	let id_to_generate;
+    	
+    	console.log(element_to_identify)
+
+    	if(element_to_identify.id == "")
+		{
+			let random_number = Math.ceil((Math.random() * 10000) + 1);
+	   		id_to_generate = element_to_identify.localName+"_"+random_number;
+	   		element_to_identify.id = id_to_generate; 	
+		}
+		else
+		{
+			
+			id_to_generate = element_to_identify.id;
+		}
+
+		return id_to_generate;	
+    }
+
+
+	
+
+</script>
+<!--<script>
+        $(function() {
+             $('#wrapper').draggable();
+             $('#image').resizable();
+        });
+    </script>
+-->
+
+<style>
+	
+	.draggable-x{
+		width:150px;
+		height: auto;
+		background-color: blue;
+	}
+
+
+</style>
+
+
+<span class="draggable-x">  Try to drag me </span>
+
+
+<script>
+	
+
+ $('.draggable-x').draggable({
+     axis: "x",
+     start: function (event, ui) {
+         //start = ui.position.top;
+     
+         console.log("Start Movement");
+     },
+     stop: function (event, ui) {
+         //stop = ui.position.top;
+         console.log(event);
+         console.log(event.target);
+         console.log(ui);
+      	 console.log("Finish Movement");	
+     }
+ });
+
+ $('.draggable-y').draggable({
+     axis: "y",
+     start: function (event, ui) {
+         start = ui.position.top;
+     },
+     stop: function (event, ui) {
+         stop = ui.position.top;
+
+         if (start > stop) {
+             //$('.draggable').css({top: ui.originalPosition.top + 'px'});
+         }
+     }
+ });     
+
+
+</script>

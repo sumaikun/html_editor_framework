@@ -106,3 +106,6 @@ init_relative_drag_and_drop();
 
         vwidth = (100/document.documentElement.clientWidth)*wx;
         vheight = (100/document.documentElement.clientHeight)*wy;  */ 
+
+
+      
