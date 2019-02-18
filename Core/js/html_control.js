@@ -1163,6 +1163,27 @@ function test_css_service()
 					  	 				  	   
 					});
 
+					editor_html.find("section").contextmenu(function(e){
+						if($(this).css('background-image') && $(this).css('background-image')!= "none")
+						{
+							console.log("Has a background");
+
+							already_exist = html_control.events.last_event_by({acc:"background_image_selected"});
+
+							register_event = new editor_event(this,"background_image_selected","image");
+							 
+							if(already_exist)
+							{
+								
+		 				  	 	html_control.events.replace_event(already_exist,register_event);
+							} 		
+							else
+							{
+						  	 	html_control.events.add_event(register_event);	
+							}							
+						}
+					});
+
 					editor_html.find("li").contextmenu(function(e) {
 					  	
 						let already_exist;
@@ -1309,6 +1330,44 @@ function test_css_service()
 					  		e.stopPropagation();
     						e.stopImmediatePropagation();
 					  	 	$('.context-menu-seven').contextMenu();
+					  	}
+
+						//$(this).attr('contenteditable','true');
+
+						$(this).blur(function(){
+							  //console.log("onblur button");
+							  //$(this).attr('contenteditable','false');								
+						});					
+						
+
+					});
+
+					editor_html.find("a").contextmenu(function(e) {				  	
+					  	
+
+					  	if(document.querySelector("input[name='hide_inspect']").checked)
+					  	{
+					  		 e.preventDefault();						 
+					  	}
+
+					  	let already_exist = html_control.events.last_event_by({acc:"button_of_reference"});
+
+						let register_event = new editor_event(this,"button_of_reference","button");
+						 
+						if(already_exist)
+						{							
+	 				  	 	html_control.events.replace_event(already_exist,register_event);
+						} 		
+						else
+						{
+					  	 	html_control.events.add_event(register_event);	
+						}			  	
+						
+						if(!document.querySelector("input[name='hide_menus']").checked)
+					  	{
+					  		//e.stopPropagation();
+    						//e.stopImmediatePropagation();
+					  	 	//$('.context-menu-seven').contextMenu();
 					  	}
 
 						//$(this).attr('contenteditable','true');

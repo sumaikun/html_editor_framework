@@ -244,11 +244,18 @@
 
 		let transform_options = {"Tranform_axis_x":{name:"Transformar en eje x"},"Tranform_axis_y":{name:"Transformar en eje y"},"Tranform_free":{name:"Transformacion libre"}};
 
+		already_exist = html_control.events.last_event_by({acc:"button_of_reference"});	
 
-		options = {
-			"transform":{name: decode_utf8("Transformar"), icon: "fa-star",items:transform_options},
-			"properties":{name: decode_utf8("Modificar propiedades del boton"), icon: "fa-edit"}			
+		if(already_exist)
+		{ 	
+			options = {
+				"transform":{name: decode_utf8("Transformar"), icon: "fa-star",items:transform_options},
+				"properties":{name: decode_utf8("Modificar propiedades del boton"), icon: "fa-edit"}			
+			};
 		}
+		else{
+			options = {};
+		}	
 
 		context_menu_highlight(".context-menu-seven");
 
